@@ -1,11 +1,13 @@
+import type { NotionPageParentInfo, NotionPageProperties } from "./notion-types";
+
 export interface NotionPage {
   id: string;
   title: string;
   url: string;
   created_time: string;
   last_edited_time: string;
-  properties: Record<string, unknown>;
-  parent: Record<string, unknown>;
+  properties: NotionPageProperties;
+  parent: NotionPageParentInfo;
 }
 
 export interface NotionPagesResponse {

@@ -1,5 +1,5 @@
-import { Client } from '@notionhq/client';
-import type { NotionBlock, NotionPageParentInfo, NotionPageProperties } from './notion-types';
+import { Client } from "@notionhq/client";
+import type { NotionBlock, NotionPageParentInfo, NotionPageProperties } from "./notion-types";
 
 export const notion = new Client({
   auth: process.env.NOTION_TOKEN,
@@ -93,11 +93,13 @@ async function fetchChildrenRecursively(blockId: string): Promise<NotionBlock[]>
   const children = response.results as NotionBlockResponse[];
 
   const withNested: NotionBlock[] = [];
+
   for (const child of children) {
     const childBlock: NotionBlock = { ...(child as NotionBlockResponse) } as NotionBlock;
     if (child.has_children) {
       childBlock.children = await fetchChildrenRecursively(child.id);
     }
+
     withNested.push(childBlock);
   }
 

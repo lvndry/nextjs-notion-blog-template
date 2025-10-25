@@ -3,19 +3,15 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { formatDate } from "../lib/date";
+import type { NotionPage } from "../lib/notion-client";
+import type { NotionPageParent, NotionPageParentInfo, NotionTitleProperty } from "../lib/notion-types";
 
-type NotionParent = { type?: "workspace" | "page_id" | "database_id"; page_id?: string };
-type NotionTitleProperty = { type: "title"; title?: Array<{ plain_text?: string }> };
-type NotionPageDetails = { properties?: Record<string, NotionTitleProperty | { type: string }> };
+type NotionPageDetails = {
+  properties?: Record<string, NotionTitleProperty | { type: string }>;
+};
 
-interface NotionPage {
-  id: string;
-  title: string;
-  url: string;
-  created_time: string;
-  last_edited_time: string;
-  properties: Record<string, unknown>;
-  parent: NotionParent;
+function isPageParent(parent: NotionPageParentInfo): parent is NotionPageParent {
+  return parent.type === "page_id";
 }
 
 interface NotionPageCardProps {
@@ -28,7 +24,7 @@ export default function NotionPageCard({ page }: NotionPageCardProps) {
   const { parent } = page;
 
   useEffect(() => {
-    const parentPageId = parent?.type === "page_id" ? parent.page_id : undefined;
+    const parentPageId = isPageParent(parent) ? parent.page_id : undefined;
     if (!parentPageId) return;
 
     let cancelled = false;
@@ -40,6 +36,7 @@ export default function NotionPageCard({ page }: NotionPageCardProps) {
         const details = data.details;
 
         let title: string | null = null;
+
         const properties = details?.properties;
         if (properties) {
           for (const [, value] of Object.entries(properties)) {
@@ -66,7 +63,7 @@ export default function NotionPageCard({ page }: NotionPageCardProps) {
     return () => {
       cancelled = true;
     };
-  }, [parent?.type, parent?.page_id]);
+  }, [parent]);
 
   return (
     <div className="group rounded-xl border border-zinc-200 bg-white p-5 transition-shadow hover:shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
@@ -77,7 +74,7 @@ export default function NotionPageCard({ page }: NotionPageCardProps) {
           </h3>
           <div className="mt-2 flex items-center gap-3 text-sm text-zinc-500 dark:text-zinc-400">
             <span>{formatDate(page.created_time)}</span>
-            {parent?.type === "page_id" && (
+            {isPageParent(parent) && (
               <span>· {parentName ?? "Parent"}</span>
             )}
           </div>
@@ -89,7 +86,7 @@ export default function NotionPageCard({ page }: NotionPageCardProps) {
           </h3>
           <div className="mt-2 flex items-center gap-3 text-sm text-zinc-500 dark:text-zinc-400">
             <span>{formatDate(page.created_time)}</span>
-            {parent?.type === "page_id" && (
+            {isPageParent(parent) && (
               <span>· {parentName ?? "Parent"}</span>
             )}
           </div>

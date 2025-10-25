@@ -4,13 +4,15 @@ import { useNotionPages } from "@/hooks/useNotionPages";
 import { useState } from "react";
 import NotionPageCard from "./NotionPageCard";
 
+type NotionPagesListProps = {
+  limit?: number;
+  header?: boolean;
+};
+
 export default function NotionPagesList({
   limit,
   header = true,
-}: {
-  limit?: number;
-  header?: boolean;
-}) {
+}: NotionPagesListProps) {
   const { pages, loading, error, refetch } = useNotionPages();
   const [searchTerm, setSearchTerm] = useState("");
 

@@ -20,7 +20,7 @@ interface NotionPageDetails {
 }
 
 interface NotionCover {
-  type: 'file' | 'external';
+  type: "file" | "external";
   file?: {
     url: string;
   };
@@ -30,7 +30,7 @@ interface NotionCover {
 }
 
 interface NotionIcon {
-  type: 'emoji' | 'file' | 'external';
+  type: "emoji" | "file" | "external";
   emoji?: string;
   file?: {
     url: string;
@@ -200,11 +200,11 @@ function extractCoverUrl(pageDetails: NotionPageDetails): string | null {
 
   if (!cover) return null;
 
-  if (cover.type === 'file' && cover.file?.url) {
+  if (cover.type === "file" && cover.file?.url) {
     return cover.file.url;
   }
 
-  if (cover.type === 'external' && cover.external?.url) {
+  if (cover.type === "external" && cover.external?.url) {
     return cover.external.url;
   }
 
@@ -219,15 +219,15 @@ function extractPageIcon(pageDetails: NotionPageDetails): string | null {
   const icon = pageDetails.icon;
   if (!icon) return null;
 
-  if (icon.type === 'emoji' && icon.emoji) {
+  if (icon.type === "emoji" && icon.emoji) {
     return icon.emoji;
   }
 
-  if (icon.type === 'file' && icon.file?.url) {
+  if (icon.type === "file" && icon.file?.url) {
     return icon.file.url;
   }
 
-  if (icon.type === 'external' && icon.external?.url) {
+  if (icon.type === "external" && icon.external?.url) {
     return icon.external.url;
   }
 
