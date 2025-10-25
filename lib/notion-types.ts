@@ -93,6 +93,16 @@ export type NumberedListItemNode = BaseNode & {
   numbered_list_item: { rich_text?: NotionRichText[] };
 };
 
+export type ToggleNode = BaseNode & {
+  type: 'toggle';
+  toggle: { rich_text?: NotionRichText[] };
+};
+
+export type TableOfContentsNode = BaseNode & {
+  type: 'table_of_contents';
+  table_of_contents: Record<string, never>;
+};
+
 export type NotionBlock =
   | ParagraphNode
   | Heading1Node
@@ -109,4 +119,6 @@ export type NotionBlock =
   | CalloutNode
   | ColumnListNode
   | BulletedListItemNode
-  | NumberedListItemNode;
+  | NumberedListItemNode
+  | ToggleNode
+  | TableOfContentsNode;

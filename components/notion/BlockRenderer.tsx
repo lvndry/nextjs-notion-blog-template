@@ -11,9 +11,11 @@ import { ImageBlock } from "./blocks/ImageBlock";
 import { ParagraphBlock } from "./blocks/ParagraphBlock";
 import { QuoteBlock } from "./blocks/QuoteBlock";
 import { TableBlock } from "./blocks/TableBlock";
+import { TableOfContentsBlock } from "./blocks/TableOfContentsBlock";
 import { ToDoBlock } from "./blocks/ToDoBlock";
+import { ToggleBlock } from "./blocks/ToggleBlock";
 
-export function BlockRenderer({ block }: { block: NotionBlock }) {
+export function BlockRenderer({ block, allBlocks }: { block: NotionBlock; allBlocks?: NotionBlock[] }) {
   switch (block.type) {
     case "paragraph":
       return <ParagraphBlock block={block} />;
@@ -41,6 +43,10 @@ export function BlockRenderer({ block }: { block: NotionBlock }) {
       return <CalloutBlock block={block} />;
     case "column_list":
       return <ColumnListBlock block={block} />;
+    case "toggle":
+      return <ToggleBlock block={block} />;
+    case "table_of_contents":
+      return <TableOfContentsBlock block={block} allBlocks={allBlocks} />;
     default:
       return (
         <div className="text-sm text-gray-500 dark:text-gray-400 italic mb-4 p-3 bg-gray-100 dark:bg-gray-800 rounded">

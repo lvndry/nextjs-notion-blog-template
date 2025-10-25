@@ -113,7 +113,7 @@ export function NotionBlocks({ blocks }: { blocks: NotionBlock[] }) {
 
     elements.push(
       <div key={String((block as { id?: string }).id) || String(blockIndex)}>
-        <BlockRenderer block={block} />
+        <BlockRenderer block={block} allBlocks={blocks} />
       </div>
     );
 
