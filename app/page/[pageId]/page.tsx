@@ -15,11 +15,23 @@ interface NotionPageDetails {
   id: string;
   url: string;
   cover?: NotionCover | null;
+  icon?: NotionIcon | null;
   properties: Record<string, unknown>;
 }
 
 interface NotionCover {
   type: 'file' | 'external';
+  file?: {
+    url: string;
+  };
+  external?: {
+    url: string;
+  };
+}
+
+interface NotionIcon {
+  type: 'emoji' | 'file' | 'external';
+  emoji?: string;
   file?: {
     url: string;
   };
@@ -65,6 +77,7 @@ export default async function NotionPage({ params }: PageProps) {
   const { pageDetails, pageContent } = pageData;
   const title = extractPageTitle(pageDetails as Record<string, unknown>);
   const coverUrl = extractCoverUrl(pageDetails as NotionPageDetails);
+  const icon = extractPageIcon(pageDetails as NotionPageDetails);
   const notionUrl = extractPageUrl(pageDetails as NotionPageDetails);
 
   return (
@@ -93,9 +106,14 @@ export default async function NotionPage({ params }: PageProps) {
               </svg>
               Back
             </Link>
-            <h1 className={`mt-4 text-4xl font-semibold leading-tight sm:text-5xl ${coverUrl ? 'text-white' : 'text-zinc-900 dark:text-white'}`}>
-              {title}
-            </h1>
+            <div className="mt-4 flex items-center gap-3">
+              {icon && (
+                <span className="text-4xl sm:text-5xl">{icon}</span>
+              )}
+              <h1 className={`text-4xl font-semibold leading-tight sm:text-5xl ${coverUrl ? 'text-white' : 'text-zinc-900 dark:text-white'}`}>
+                {title}
+              </h1>
+            </div>
             {notionUrl && (
               <div className="mt-6 flex gap-3">
                 <a
@@ -177,6 +195,7 @@ function extractPageTitle(pageDetails: Record<string, unknown>): string {
 }
 
 function extractCoverUrl(pageDetails: NotionPageDetails): string | null {
+  console.log(pageDetails);
   const { cover } = pageDetails;
 
   if (!cover) return null;
@@ -194,4 +213,23 @@ function extractCoverUrl(pageDetails: NotionPageDetails): string | null {
 
 function extractPageUrl(details: NotionPageDetails): string | null {
   return details.url || null;
+}
+
+function extractPageIcon(pageDetails: NotionPageDetails): string | null {
+  const icon = pageDetails.icon;
+  if (!icon) return null;
+
+  if (icon.type === 'emoji' && icon.emoji) {
+    return icon.emoji;
+  }
+
+  if (icon.type === 'file' && icon.file?.url) {
+    return icon.file.url;
+  }
+
+  if (icon.type === 'external' && icon.external?.url) {
+    return icon.external.url;
+  }
+
+  return null;
 }
