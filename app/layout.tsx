@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Notion Pages Viewer",
-  description: "View and interact with your Notion pages using the Notion API",
+  title: "Next.js + Notion Blog Template",
+  description: "A modern, customizable Next.js boilerplate for creating a blog powered by Notion as a CMS. Perfect for developers who want to leverage Notion's powerful content management while maintaining full control over their blog's design and functionality.",
 };
 
 export default function RootLayout({

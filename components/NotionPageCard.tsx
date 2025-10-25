@@ -32,7 +32,7 @@ export default function NotionPageCard({ page }: NotionPageCardProps) {
     try {
       const response = await fetch(`/api/notion/pages?action=content&pageId=${page.id}`);
       const data = await response.json();
-      
+
       if (data.content) {
         setContent(data.content);
         setIsExpanded(true);
@@ -54,8 +54,8 @@ export default function NotionPageCard({ page }: NotionPageCardProps) {
     });
   };
 
-  const renderBlockContent = (block: Record<string, unknown>) => {
-    const getTextContent = (textArray: Array<{ plain_text: string }> | undefined) => {
+  function renderBlockContent(block: Record<string, unknown>) {
+    function getTextContent(textArray: Array<{ plain_text: string }> | undefined) {
       if (!textArray) return "";
       return textArray.map((text, index) => (
         <span key={index}>{text.plain_text}</span>
@@ -109,10 +109,10 @@ export default function NotionPageCard({ page }: NotionPageCardProps) {
         const todoItem = block.to_do as { text?: Array<{ plain_text: string }>; checked?: boolean } | undefined;
         return (
           <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
-            <input 
-              type="checkbox" 
-              checked={todoItem?.checked || false} 
-              readOnly 
+            <input
+              type="checkbox"
+              checked={todoItem?.checked || false}
+              readOnly
               className="rounded"
             />
             <span>
@@ -134,7 +134,7 @@ export default function NotionPageCard({ page }: NotionPageCardProps) {
       <div className="flex justify-between items-start mb-4">
         <div className="flex-1">
           {page.id ? (
-            <Link 
+            <Link
               href={`/page/${page.id}`}
               className="text-lg font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 hover:underline transition-colors cursor-pointer block mb-2"
             >
