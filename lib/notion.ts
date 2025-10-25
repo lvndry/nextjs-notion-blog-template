@@ -1,5 +1,5 @@
 import { Client } from '@notionhq/client';
-import type { NotionBlock } from './notion-types';
+import type { NotionBlock, NotionPageParentInfo, NotionPageProperties } from './notion-types';
 
 export const notion = new Client({
   auth: process.env.NOTION_TOKEN,
@@ -11,8 +11,8 @@ export interface NotionPage {
   url: string;
   created_time: string;
   last_edited_time: string;
-  properties: Record<string, unknown>;
-  parent: Record<string, unknown>;
+  properties: NotionPageProperties;
+  parent: NotionPageParentInfo;
 }
 
 interface NotionPageResponse {
@@ -20,8 +20,8 @@ interface NotionPageResponse {
   url: string;
   created_time: string;
   last_edited_time: string;
-  properties: Record<string, unknown>;
-  parent: Record<string, unknown>;
+  properties: NotionPageProperties;
+  parent: NotionPageParentInfo;
 }
 
 interface NotionBlockResponse {
@@ -69,9 +69,11 @@ function extractPageTitle(page: NotionPageResponse): string {
 
   for (const [, value] of Object.entries(properties)) {
     if (value && typeof value === "object" && "type" in value) {
-      const prop = value as { type: string; title?: Array<{ plain_text: string }> };
-      if (prop.type === "title" && prop.title && prop.title.length > 0) {
-        return prop.title.map((t) => t.plain_text).join("");
+      if (value.type === "title" && "title" in value) {
+        const titleProp = value as { type: "title"; title: Array<{ plain_text: string }> };
+        if (titleProp.title && titleProp.title.length > 0) {
+          return titleProp.title.map((t) => t.plain_text).join("");
+        }
       }
     }
   }
