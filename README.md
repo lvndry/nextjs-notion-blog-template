@@ -2,29 +2,23 @@
 
 A modern, customizable Next.js boilerplate for creating a blog powered by Notion as a CMS. Perfect for developers who want to leverage Notion's powerful content management while maintaining full control over their blog's design and functionality.
 
-## 🚀 Quick Start
+## Quick Start
 
 This template provides everything you need to get started with a Notion-powered blog in minutes.
 
-## ✨ Features
+## Features
 
-- 📝 **Notion as CMS**: Use Notion as your content management system
-- 🎨 **Fully Customizable**: Complete control over design and UI components
-- ⚡ **Next.js 16**: Latest Next.js with App Router and React 19
-- 📱 **Responsive Design**: Mobile-first, responsive layout
-- 🌙 **Dark Mode**: Built-in dark mode support
-- 🔍 **SEO Ready**: Optimized for search engines
-- 🚀 **Performance**: Fast loading with optimized rendering
-- 📄 **Rich Content**: Support for all Notion block types
-- 🔗 **Direct Links**: Easy navigation between pages
+- **Notion as CMS**: Use Notion as your content management system
+- **Fully Customizable**: Complete control over design and UI components
+- **Next.js 16**: Latest Next.js with App Router and React 19
+- **Responsive Design**: Mobile-first, responsive layout
+- **Dark Mode**: Built-in dark mode support
+- **SEO Ready**: Optimized for search engines
+- **Performance**: Fast loading with optimized rendering
+- **Rich Content**: Support for all Notion block types
+- **Direct Links**: Easy navigation between pages
 
-## 🛠️ Setup Instructions
-
-### Prerequisites
-
-- Node.js 18+ 
-- A Notion account
-- Git
+## Setup Instructions
 
 ### 1. Clone and Install
 
@@ -103,7 +97,7 @@ The app uses **Tailwind CSS** for styling. You can customize:
 All components are in the `/components` directory:
 
 - **`NotionPagesList.tsx`**: Main page listing component
-- **`NotionPageCard.tsx`**: Individual page card component  
+- **`NotionPageCard.tsx`**: Individual page card component
 - **`NotionPageViewer.tsx`**: Full page content renderer
 - **`DebugInfo.tsx`**: Development debugging component
 
@@ -148,7 +142,6 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
 
 ## 📖 Learn More
 
