@@ -27,8 +27,8 @@ export default function Home() {
                 Publish from Notion with a stunning, conversion-focused landing. No CMS, no friction—just ship.
               </p>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <a href="https://github.com/lvndry/nextjs-notion-blog-template" className="inline-flex items-center justify-center rounded-md bg-zinc-900 px-5 py-3 text-white shadow-lg shadow-zinc-900/10 hover:bg-zinc-800 dark:bg-white dark:text-black dark:hover:bg-zinc-200">Start free</a>
-                <a href="#demo" className="inline-flex items-center justify-center rounded-md border border-zinc-300 bg-white px-5 py-3 text-zinc-900 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-white dark:hover:bg-zinc-800">See it in action</a>
+                <a href="https://github.com/lvndry/nextjs-notion-blog-template" className="inline-flex items-center justify-center rounded-md bg-zinc-900 px-5 py-3 text-white shadow-lg shadow-zinc-900/10 hover:bg-zinc-800 dark:bg-white dark:text-black dark:hover:bg-zinc-200">Start Now</a>
+                <a href="https://nextjs-notion-blog-template-eight.vercel.app" className="inline-flex items-center justify-center rounded-md border border-zinc-300 bg-white px-5 py-3 text-zinc-900 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-white dark:hover:bg-zinc-800">See it in action</a>
               </div>
               {/* Social proof */}
               <div className="mt-10 grid grid-cols-2 items-center gap-6 opacity-80 sm:grid-cols-4">
@@ -142,7 +142,7 @@ export default function Home() {
             <h3 className="text-2xl font-semibold text-zinc-900 dark:text-white">Launch your Notion-powered blog today</h3>
             <p className="mt-2 text-zinc-600 dark:text-zinc-400">Deploy on Vercel, connect your database, and start publishing in minutes.</p>
             <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <a href="#" className="inline-flex items-center justify-center rounded-md bg-zinc-900 px-5 py-3 text-white shadow-lg shadow-zinc-900/10 hover:bg-zinc-800 dark:bg-white dark:text-black dark:hover:bg-zinc-200">Deploy to Vercel</a>
+              <a href="https://vercel.com/new?template=https://github.com/lvndry/nextjs-notion-blog-template" className="inline-flex items-center justify-center rounded-md bg-zinc-900 px-5 py-3 text-white shadow-lg shadow-zinc-900/10 hover:bg-zinc-800 dark:bg-white dark:text-black dark:hover:bg-zinc-200">Deploy to Vercel</a>
               <a href="https://github.com/lvndry/nextjs-notion-blog-template" className="inline-flex items-center justify-center rounded-md border border-zinc-300 bg-white px-5 py-3 text-zinc-900 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-white dark:hover:bg-zinc-800">Star on GitHub</a>
             </div>
           </div>
