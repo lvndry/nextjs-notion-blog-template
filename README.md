@@ -2,6 +2,8 @@
 
 A modern, customizable Next.js boilerplate for creating a blog powered by Notion as a CMS. Perfect for developers who want to leverage Notion's powerful content management while maintaining full control over their blog's design and functionality.
 
+[Live Demo](https://nextjs-notion-blog-template-eight.vercel.app)
+
 ## Quick Start
 
 This template provides everything you need to get started with a Notion-powered blog in minutes.
