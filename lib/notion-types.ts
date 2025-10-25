@@ -1,6 +1,6 @@
-// Narrow, minimal Notion block types used by our renderer
-
-export type NotionRichText = { plain_text?: string };
+export type NotionRichText = {
+  plain_text?: string
+};
 
 export type BaseNode = {
   id?: string;

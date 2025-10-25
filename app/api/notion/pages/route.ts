@@ -18,7 +18,11 @@ export async function GET(request: NextRequest) {
       case "list":
         // Get all accessible pages
         const pages = await searchAllPages();
-        return NextResponse.json({ pages });
+        return NextResponse.json({ pages }, {
+          headers: {
+            'Cache-Control': 's-maxage=3600, stale-while-revalidate',
+          },
+        });
 
       case "content":
         // Get content for a specific page
@@ -30,7 +34,11 @@ export async function GET(request: NextRequest) {
         }
 
         const content = await getPageContent(pageId);
-        return NextResponse.json({ content });
+        return NextResponse.json({ content }, {
+          headers: {
+            'Cache-Control': 's-maxage=3600, stale-while-revalidate',
+          },
+        });
 
       case "details":
         // Get detailed information for a specific page
@@ -42,7 +50,11 @@ export async function GET(request: NextRequest) {
         }
 
         const details = await getPageDetails(pageId);
-        return NextResponse.json({ details });
+        return NextResponse.json({ details }, {
+          headers: {
+            'Cache-Control': 's-maxage=3600, stale-while-revalidate',
+          },
+        });
 
       default:
         return NextResponse.json(

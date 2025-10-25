@@ -4,7 +4,13 @@ import { useNotionPages } from "@/hooks/useNotionPages";
 import { useState } from "react";
 import NotionPageCard from "./NotionPageCard";
 
-export default function NotionPagesList() {
+export default function NotionPagesList({
+  limit,
+  header = true,
+}: {
+  limit?: number;
+  header?: boolean;
+}) {
   const { pages, loading, error, refetch } = useNotionPages();
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -54,35 +60,39 @@ export default function NotionPagesList() {
     );
   }
 
+  const visiblePages = typeof limit === 'number' ? filteredPages.slice(0, limit) : filteredPages;
+
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-            Your Notion Pages
-          </h2>
-          <p className="text-gray-600 dark:text-gray-400">
-            {pages.length} page{pages.length !== 1 ? 's' : ''} found
-          </p>
+      {header && (
+        <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
+          <div>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+              Your Notion Pages
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400">
+              {pages.length} page{pages.length !== 1 ? 's' : ''} found
+            </p>
+          </div>
+          <div className="flex gap-2">
+            <input
+              type="text"
+              placeholder="Search pages..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+            <button
+              onClick={refetch}
+              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+            >
+              Refresh
+            </button>
+          </div>
         </div>
-        <div className="flex gap-2">
-          <input
-            type="text"
-            placeholder="Search pages..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          />
-          <button
-            onClick={refetch}
-            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
-          >
-            Refresh
-          </button>
-        </div>
-      </div>
+      )}
 
-      {filteredPages.length === 0 ? (
+      {visiblePages.length === 0 ? (
         <div className="text-center py-12">
           <div className="text-gray-400 dark:text-gray-500 mb-4">
             <svg className="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -100,8 +110,8 @@ export default function NotionPagesList() {
           </p>
         </div>
       ) : (
-        <div className="grid gap-6">
-          {filteredPages.map((page) => (
+        <div className="grid gap-6 sm:grid-cols-2">
+          {visiblePages.map((page) => (
             <NotionPageCard key={page.id} page={page} />
           ))}
         </div>

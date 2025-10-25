@@ -1,4 +1,4 @@
-import { getPageContent, getPageDetails } from "@/lib/notion";
+import { getPageContent, getPageDetails, searchAllPages } from "@/lib/notion";
 import { isValidUUID, normalizeUUID } from "@/lib/uuid";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -15,7 +15,7 @@ async function fetchPageData(pageId: string) {
   try {
     // Normalize the UUID format for the Notion API
     const normalizedPageId = normalizeUUID(pageId);
-    
+
     // Fetch page details and content in parallel
     const [pageDetails, pageContent] = await Promise.all([
       getPageDetails(normalizedPageId),
@@ -31,7 +31,7 @@ async function fetchPageData(pageId: string) {
 
 export default async function NotionPage({ params }: PageProps) {
   const resolvedParams = await params;
-  
+
   if (!resolvedParams.pageId || resolvedParams.pageId === "undefined" || !isValidUUID(resolvedParams.pageId)) {
     console.error("Invalid pageId:", resolvedParams.pageId);
     notFound();
@@ -52,7 +52,7 @@ export default async function NotionPage({ params }: PageProps) {
       <div className="container mx-auto px-4 py-8">
         {/* Navigation */}
         <div className="mb-6">
-          <Link 
+          <Link
             href="/"
             className="inline-flex items-center gap-2 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors"
           >
@@ -64,8 +64,8 @@ export default async function NotionPage({ params }: PageProps) {
         </div>
 
         {/* Page Content */}
-        <NotionPageViewer 
-          pageDetails={pageDetails} 
+        <NotionPageViewer
+          pageDetails={pageDetails}
           pageContent={pageContent}
         />
       </div>
@@ -75,7 +75,7 @@ export default async function NotionPage({ params }: PageProps) {
 
 export async function generateMetadata({ params }: PageProps) {
   const resolvedParams = await params;
-  
+
   if (!resolvedParams.pageId || resolvedParams.pageId === "undefined" || !isValidUUID(resolvedParams.pageId)) {
     return {
       title: "Page Not Found - Notion Blog",
@@ -87,7 +87,7 @@ export async function generateMetadata({ params }: PageProps) {
     const normalizedPageId = normalizeUUID(resolvedParams.pageId);
     const pageDetails = await getPageDetails(normalizedPageId);
     const title = extractPageTitle(pageDetails);
-    
+
     return {
       title: `${title} - Notion Blog`,
       description: `View content from your Notion page: ${title}`,
@@ -100,10 +100,20 @@ export async function generateMetadata({ params }: PageProps) {
   }
 }
 
+export async function generateStaticParams() {
+  const pages = await searchAllPages();
+  return pages.map((page) => ({
+    pageId: page.id,
+  }));
+}
+
+export const revalidate = 3600;
+export const dynamic = 'force-static';
+
 // Helper function to extract page title
 function extractPageTitle(pageDetails: Record<string, unknown>): string {
   const properties = pageDetails.properties as Record<string, unknown>;
-  
+
   for (const [, value] of Object.entries(properties)) {
     if (value && typeof value === "object" && "type" in value) {
       const prop = value as { type: string; title?: Array<{ plain_text: string }> };
@@ -112,7 +122,7 @@ function extractPageTitle(pageDetails: Record<string, unknown>): string {
       }
     }
   }
-  
+
   // Fallback to page ID if no title found
   return `Untitled Page (${(pageDetails.id as string).slice(0, 8)})`;
 }

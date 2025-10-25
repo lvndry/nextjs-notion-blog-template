@@ -69,47 +69,41 @@ export default function NotionPageCard({ page }: NotionPageCardProps) {
   }, [parent?.type, parent?.page_id]);
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6 shadow-sm hover:shadow-md transition-shadow">
-      <div className="flex justify-between items-start mb-4">
-        <div className="flex-1">
-          {page.id ? (
-            <Link
-              href={`/page/${page.id}`}
-              className="text-lg font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 hover:underline transition-colors cursor-pointer block mb-2"
-            >
-              {page.title}
-            </Link>
-          ) : (
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-              {page.title}
-            </h3>
-          )}
-          <div className="text-sm text-gray-500 dark:text-gray-400 space-y-1">
-            <p>Created: {formatDate(page.created_time)}</p>
-            <p>Last edited: {formatDate(page.last_edited_time)}</p>
+    <div className="group rounded-xl border border-zinc-200 bg-white p-5 transition-shadow hover:shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+      {page.id ? (
+        <Link href={`/page/${page.id}`} className="block">
+          <h3 className="text-lg font-medium text-zinc-900 group-hover:underline dark:text-white">
+            {page.title}
+          </h3>
+          <div className="mt-2 flex items-center gap-3 text-sm text-zinc-500 dark:text-zinc-400">
+            <span>{formatDate(page.created_time)}</span>
             {parent?.type === "page_id" && (
-              <p>Parent Page: {parentName ?? "Loading..."}</p>
+              <span>· {parentName ?? "Parent"}</span>
+            )}
+          </div>
+        </Link>
+      ) : (
+        <div>
+          <h3 className="text-lg font-medium text-zinc-900 dark:text-white">
+            {page.title}
+          </h3>
+          <div className="mt-2 flex items-center gap-3 text-sm text-zinc-500 dark:text-zinc-400">
+            <span>{formatDate(page.created_time)}</span>
+            {parent?.type === "page_id" && (
+              <span>· {parentName ?? "Parent"}</span>
             )}
           </div>
         </div>
-        <div className="flex gap-2 ml-4">
-          {page.id && (
-            <Link
-              href={`/page/${page.id}`}
-              className="px-3 py-1 text-sm bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded hover:bg-green-200 dark:hover:bg-green-800 transition-colors"
-            >
-              View Details
-            </Link>
-          )}
-          <a
-            href={page.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-3 py-1 text-sm bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors"
-          >
-            Open in Notion
-          </a>
-        </div>
+      )}
+      <div className="mt-4 flex justify-end opacity-0 transition-opacity group-hover:opacity-100">
+        <a
+          href={page.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+        >
+          Open in Notion →
+        </a>
       </div>
     </div>
   );

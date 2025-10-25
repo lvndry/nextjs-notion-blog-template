@@ -1,4 +1,5 @@
 import { Client } from '@notionhq/client';
+import type { NotionBlock } from './notion-types';
 
 export const notion = new Client({
   auth: process.env.NOTION_TOKEN,
@@ -12,15 +13,6 @@ export interface NotionPage {
   last_edited_time: string;
   properties: Record<string, unknown>;
   parent: Record<string, unknown>;
-}
-
-export interface NotionBlock {
-  id: string;
-  type: string;
-  has_children: boolean;
-  // When present, contains recursively fetched child blocks
-  children?: NotionBlock[];
-  [key: string]: unknown;
 }
 
 interface NotionPageResponse {
