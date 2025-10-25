@@ -81,9 +81,10 @@ export default async function NotionPage({ params }: PageProps) {
   const notionUrl = extractPageUrl(pageDetails as NotionPageDetails);
 
   return (
-    <div className="min-h-screen bg-zinc-50 font-sans dark:bg-black">
-      {/* Hero with optional cover image */}
-      <section className="relative overflow-hidden">
+    <>
+      <div className="min-h-screen bg-zinc-50 font-sans dark:bg-black">
+        {/* Hero with optional cover image */}
+        <section className="relative overflow-hidden">
         {coverUrl ? (
           <div className="absolute inset-0">
             <Image src={coverUrl} alt={title} fill className="object-cover" loading="lazy" />
@@ -136,17 +137,24 @@ export default async function NotionPage({ params }: PageProps) {
           <NotionPageViewer pageDetails={pageDetails} pageContent={pageContent} />
         </div>
       </section>
-    </div>
+      </div>
+    </>
   );
 }
 
 export async function generateMetadata({ params }: PageProps) {
   const resolvedParams = await params;
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nextjs-notion-blog-template-eight.vercel.app";
+  const pageUrl = `${baseUrl}/page/${resolvedParams.pageId}`;
 
   if (!resolvedParams.pageId || resolvedParams.pageId === "undefined" || !isValidUUID(resolvedParams.pageId)) {
     return {
       title: "Page Not Found - Notion Blog",
       description: "The requested Notion page could not be found.",
+      robots: {
+        index: false,
+        follow: false,
+      },
     };
   }
 
@@ -154,15 +162,80 @@ export async function generateMetadata({ params }: PageProps) {
     const normalizedPageId = normalizeUUID(resolvedParams.pageId);
     const pageDetails = await getPageDetails(normalizedPageId);
     const title = extractPageTitle(pageDetails);
+    const coverUrl = extractCoverUrl(pageDetails as NotionPageDetails);
+    const notionUrl = extractPageUrl(pageDetails as NotionPageDetails);
+
+    // Create a description from the title or use a default
+    const description = `Read "${title}" - A Notion-powered blog post with rich content and modern design.`;
+
+    // Use cover image for Open Graph, fallback to default
+    const ogImage = coverUrl || `${baseUrl}/og-image.png`;
 
     return {
-      title: `${title} - Notion Blog`,
-      description: `View content from your Notion page: ${title}`,
+      title: title,
+      description: description,
+      keywords: [title, "Notion", "Blog", "Article", "Content"],
+      authors: [{ name: "Notion Blog Template" }],
+      creator: "Notion Blog Template",
+      publisher: "Notion Blog Template",
+      metadataBase: new URL(baseUrl),
+      alternates: {
+        canonical: pageUrl,
+      },
+      openGraph: {
+        type: "article",
+        locale: "en_US",
+        url: pageUrl,
+        title: title,
+        description: description,
+        siteName: "Notion Blog Template",
+        images: [
+          {
+            url: ogImage,
+            width: 1200,
+            height: 630,
+            alt: title,
+          },
+        ],
+        publishedTime: new Date().toISOString(),
+        modifiedTime: new Date().toISOString(),
+        authors: ["Notion Blog Template"],
+        section: "Technology",
+        tags: [title, "Notion", "Blog"],
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: title,
+        description: description,
+        images: [ogImage],
+        creator: "@notionblogtemplate", // Replace with your Twitter handle
+      },
+      robots: {
+        index: true,
+        follow: true,
+        googleBot: {
+          index: true,
+          follow: true,
+          "max-video-preview": -1,
+          "max-image-preview": "large",
+          "max-snippet": -1,
+        },
+      },
+      other: {
+        "article:author": "Notion Blog Template",
+        "article:section": "Technology",
+        "article:tag": title,
+        ...(notionUrl && { "notion:url": notionUrl }),
+      },
     };
   } catch {
     return {
       title: "Page Not Found - Notion Blog",
       description: "The requested Notion page could not be found.",
+      robots: {
+        index: false,
+        follow: false,
+      },
     };
   }
 }
@@ -195,7 +268,6 @@ function extractPageTitle(pageDetails: Record<string, unknown>): string {
 }
 
 function extractCoverUrl(pageDetails: NotionPageDetails): string | null {
-  console.log(pageDetails);
   const { cover } = pageDetails;
 
   if (!cover) return null;
