@@ -1,130 +1,158 @@
-# Notion Pages Viewer
+# Next.js Notion Blog Template
 
-A Next.js application that uses the Notion API to retrieve and display all pages accessible to your Notion integration.
+A modern, customizable Next.js boilerplate for creating a blog powered by Notion as a CMS. Perfect for developers who want to leverage Notion's powerful content management while maintaining full control over their blog's design and functionality.
 
-## Features
+## 🚀 Quick Start
 
-- 🔍 **Search and View Pages**: Browse all Notion pages accessible to your integration
-- 📄 **Full Page View**: Click on page titles to view complete page content in a dedicated view
-- 📄 **Page Content Preview**: View the content of individual pages without leaving the app
-- 🔗 **Direct Notion Links**: Open pages directly in Notion
-- 🎨 **Modern UI**: Clean, responsive interface with dark mode support
-- ⚡ **Real-time Updates**: Refresh to get the latest pages and content
-- 🔄 **Navigation**: Easy navigation between page list and individual page views
+This template provides everything you need to get started with a Notion-powered blog in minutes.
 
-## Setup Instructions
+## ✨ Features
 
-### 1. Install Dependencies
+- 📝 **Notion as CMS**: Use Notion as your content management system
+- 🎨 **Fully Customizable**: Complete control over design and UI components
+- ⚡ **Next.js 16**: Latest Next.js with App Router and React 19
+- 📱 **Responsive Design**: Mobile-first, responsive layout
+- 🌙 **Dark Mode**: Built-in dark mode support
+- 🔍 **SEO Ready**: Optimized for search engines
+- 🚀 **Performance**: Fast loading with optimized rendering
+- 📄 **Rich Content**: Support for all Notion block types
+- 🔗 **Direct Links**: Easy navigation between pages
+
+## 🛠️ Setup Instructions
+
+### Prerequisites
+
+- Node.js 18+ 
+- A Notion account
+- Git
+
+### 1. Clone and Install
 
 ```bash
+# Clone this template
+git clone https://github.com/your-username/nextjs-notion-blog-template.git
+cd nextjs-notion-blog-template
+
+# Install dependencies
 npm install
+# or
+yarn install
+# or
+bun install
 ```
 
 ### 2. Create Notion Integration
 
-1. Go to [https://www.notion.so/my-integrations](https://www.notion.so/my-integrations)
-2. Click "New integration"
-3. Give it a name (e.g., "Pages Viewer")
+1. Go to [https://www.notion.so/profile/integrations](https://www.notion.so/profile/integrations)
+2. Click **"New integration"**
+3. Give it a name (e.g., "My Blog CMS")
 4. Select the workspace you want to access
-5. Click "Submit"
-6. Copy the "Internal Integration Token"
+5. Click **"Submit"**
+6. Copy the **"Internal Integration Token"** (starts with `ntn_`)
 
 ### 3. Configure Environment
 
-1. Copy the example environment file:
-   ```bash
-   cp .env.example .env.local
-   ```
+```bash
+# Copy the environment template
+cp .env.example .env.local
+```
 
-2. Edit `.env.local` and add your Notion token:
-   ```
-   NOTION_TOKEN=your_actual_token_here
-   ```
+Edit `.env.local` and add your Notion token:
+```env
+NOTION_TOKEN=ntn_your_actual_token_here
+```
 
-### 4. Share Pages with Integration
+### 4. Grant Access to Your Notion Pages
 
-For each page you want to view in the app:
+To allow your integration to access specific pages:
 
-1. Open the page in Notion
-2. Click the "Share" button (top right)
-3. Click "Add connections"
-4. Search for and select your integration
-5. Click "Confirm"
+1. Go back to your integration at [https://www.notion.so/profile/integrations](https://www.notion.so/profile/integrations)
+2. Click on your integration name
+3. Go to the **"Access"** tab
+4. Click **"Add pages"** or **"Add databases"**
+5. Search for and select the pages/databases you want to display on your blog
+6. Click **"Save"**
 
-### 5. Run the Application
+### 5. Run the Development Server
 
 ```bash
 npm run dev
+# or
+yarn dev
+# or
+bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to view the application.
+Open [http://localhost:3000](http://localhost:3000) to see your blog!
 
-## API Endpoints
+## 🎨 Customization Guide
 
-The application includes the following API routes:
+This template is designed to be easily customizable. Here's how to make it your own:
 
-- `GET /api/notion/pages?action=list` - Get all accessible pages
-- `GET /api/notion/pages?action=content&pageId=<id>` - Get page content
-- `GET /api/notion/pages?action=details&pageId=<id>` - Get page details
+### 1. Styling and Theme
 
-## Supported Block Types
+The app uses **Tailwind CSS** for styling. You can customize:
 
-The application can display content from various Notion block types:
+- **Colors**: Edit `app/globals.css` for custom color schemes
+- **Typography**: Modify font families and sizes in the CSS
+- **Layout**: Adjust spacing, containers, and responsive breakpoints
+- **Dark Mode**: Customize dark mode colors in the CSS variables
 
-- Paragraphs
-- Headings (H1, H2, H3)
-- Bulleted lists
-- Numbered lists
-- To-do items
-- Code blocks
-- Quotes
-- Dividers
-- And more with graceful fallbacks for unsupported types
+### 2. Components
 
-## Navigation
+All components are in the `/components` directory:
 
-- **Main Page (`/`)**: View all your Notion pages in a list format
-- **Individual Page (`/page/[pageId]`)**: View the full content of a specific page
-- **Click on page titles** to navigate to the detailed view
-- **Use the "Back to Pages" link** to return to the main list
+- **`NotionPagesList.tsx`**: Main page listing component
+- **`NotionPageCard.tsx`**: Individual page card component  
+- **`NotionPageViewer.tsx`**: Full page content renderer
+- **`DebugInfo.tsx`**: Development debugging component
 
-## UUID Format Handling
+### 3. Page Structure
 
-The application automatically handles different UUID formats:
+- **`app/page.tsx`**: Homepage layout
+- **`app/page/[pageId]/page.tsx`**: Individual page layout
+- **`app/layout.tsx`**: Global layout and metadata
 
-- **Notion URLs**: `5d0afad8277a4ffa8eea4820700ee069` (32 characters, no hyphens)
-- **Standard UUIDs**: `5d0afad8-277a-4ffa-8eea-4820700ee069` (36 characters with hyphens)
-- **Automatic Conversion**: The app converts between formats as needed for API calls and URLs
+### 4. Notion Integration
 
-## Troubleshooting
+The Notion API integration is in `/lib/notion.ts`:
 
-### "NOTION_TOKEN environment variable is not set"
+- **`searchAllPages()`**: Fetch all accessible pages
+- **`getPageContent()`**: Get page content blocks
+- **`getPageDetails()`**: Get page metadata
 
-- Make sure you've created a `.env.local` file
-- Verify the token is correctly set in the file
-- Restart your development server
+### 5. Supported Content Types
 
-### "No pages found"
+The template supports all major Notion block types:
 
-- Ensure your integration has been shared with the pages you want to view
-- Check that the integration has the correct permissions
-- Try refreshing the page
+- ✅ Paragraphs and text
+- ✅ Headings (H1, H2, H3)
+- ✅ Lists (bulleted, numbered, to-do)
+- ✅ Code blocks with syntax highlighting
+- ✅ Quotes and callouts
+- ✅ Images and embeds
+- ✅ Tables
+- ✅ Dividers
 
-### Pages not loading
 
-- Verify your Notion token is valid
-- Check that the integration hasn't been revoked
-- Ensure you have internet connectivity
+## 🤝 Contributing
 
-## Built With
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-- [Next.js 16](https://nextjs.org/) - React framework
-- [Notion API](https://developers.notion.com/) - Official Notion API
-- [Tailwind CSS](https://tailwindcss.com/) - Styling
-- [TypeScript](https://www.typescriptlang.org/) - Type safety
+1. Fork the project
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-## Learn More
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+
+## 📖 Learn More
 
 - [Notion API Documentation](https://developers.notion.com/)
 - [Next.js Documentation](https://nextjs.org/docs)
+- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
 - [Notion API Working with Page Content](https://developers.notion.com/docs/working-with-page-content)
