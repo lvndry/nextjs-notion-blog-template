@@ -5,10 +5,12 @@ A Next.js application that uses the Notion API to retrieve and display all pages
 ## Features
 
 - 🔍 **Search and View Pages**: Browse all Notion pages accessible to your integration
+- 📄 **Full Page View**: Click on page titles to view complete page content in a dedicated view
 - 📄 **Page Content Preview**: View the content of individual pages without leaving the app
 - 🔗 **Direct Notion Links**: Open pages directly in Notion
 - 🎨 **Modern UI**: Clean, responsive interface with dark mode support
 - ⚡ **Real-time Updates**: Refresh to get the latest pages and content
+- 🔄 **Navigation**: Easy navigation between page list and individual page views
 
 ## Setup Instructions
 
@@ -74,7 +76,25 @@ The application can display content from various Notion block types:
 - Bulleted lists
 - Numbered lists
 - To-do items
-- And more...
+- Code blocks
+- Quotes
+- Dividers
+- And more with graceful fallbacks for unsupported types
+
+## Navigation
+
+- **Main Page (`/`)**: View all your Notion pages in a list format
+- **Individual Page (`/page/[pageId]`)**: View the full content of a specific page
+- **Click on page titles** to navigate to the detailed view
+- **Use the "Back to Pages" link** to return to the main list
+
+## UUID Format Handling
+
+The application automatically handles different UUID formats:
+
+- **Notion URLs**: `5d0afad8277a4ffa8eea4820700ee069` (32 characters, no hyphens)
+- **Standard UUIDs**: `5d0afad8-277a-4ffa-8eea-4820700ee069` (36 characters with hyphens)
+- **Automatic Conversion**: The app converts between formats as needed for API calls and URLs
 
 ## Troubleshooting
 

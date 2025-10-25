@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import NotionPageCard from './NotionPageCard';
+import { useEffect, useState } from "react";
+import NotionPageCard from "./NotionPageCard";
 
 interface NotionPage {
   id: string;
@@ -17,7 +17,7 @@ export default function NotionPagesList() {
   const [pages, setPages] = useState<NotionPage[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     fetchPages();
@@ -28,7 +28,7 @@ export default function NotionPagesList() {
       setLoading(true);
       setError(null);
       
-      const response = await fetch('/api/notion/pages?action=list');
+      const response = await fetch("/api/notion/pages?action=list");
       const data = await response.json();
       
       if (data.error) {
@@ -37,8 +37,8 @@ export default function NotionPagesList() {
         setPages(data.pages || []);
       }
     } catch (err) {
-      setError('Failed to fetch pages from Notion');
-      console.error('Error fetching pages:', err);
+      setError("Failed to fetch pages from Notion");
+      console.error("Error fetching pages:", err);
     } finally {
       setLoading(false);
     }

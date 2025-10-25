@@ -1,4 +1,4 @@
-import NotionPagesList from '@/components/NotionPagesList';
+import NotionPagesList from "@/components/NotionPagesList";
 
 export default function Home() {
   return (

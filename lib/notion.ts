@@ -1,11 +1,9 @@
 import { Client } from '@notionhq/client';
 
-// Initialize the Notion client
 export const notion = new Client({
   auth: process.env.NOTION_TOKEN,
 });
 
-// Types for our application
 export interface NotionPage {
   id: string;
   title: string;
@@ -50,15 +48,19 @@ export async function searchAllPages(): Promise<NotionPage[]> {
       page_size: 100
     });
 
-    const pages: NotionPage[] = response.results.map((page) => ({
-      id: page.id,
-      title: extractPageTitle(page as NotionPageResponse),
-      url: (page as NotionPageResponse).url,
-      created_time: (page as NotionPageResponse).created_time,
-      last_edited_time: (page as NotionPageResponse).last_edited_time,
-      properties: (page as NotionPageResponse).properties,
-      parent: (page as NotionPageResponse).parent
-    }));
+    const pages: NotionPage[] = response.results.map((page) => {
+      const urlFriendlyId = page.id.replace(/-/g, '');
+      
+      return {
+        id: urlFriendlyId,
+        title: extractPageTitle(page as NotionPageResponse),
+        url: (page as NotionPageResponse).url,
+        created_time: (page as NotionPageResponse).created_time,
+        last_edited_time: (page as NotionPageResponse).last_edited_time,
+        properties: (page as NotionPageResponse).properties,
+        parent: (page as NotionPageResponse).parent
+      };
+    });
 
     return pages;
   } catch (error) {
@@ -69,10 +71,8 @@ export async function searchAllPages(): Promise<NotionPage[]> {
 
 // Extract page title from properties
 function extractPageTitle(page: NotionPageResponse): string {
-  // Try to get title from various property types
   const properties = page.properties;
   
-  // Look for title property
   for (const [, value] of Object.entries(properties)) {
     if (value && typeof value === 'object' && 'type' in value) {
       const prop = value as { type: string; title?: Array<{ plain_text: string }> };

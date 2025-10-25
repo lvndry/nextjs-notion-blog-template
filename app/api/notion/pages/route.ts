@@ -3,7 +3,6 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
   try {
-    // Check if NOTION_TOKEN is configured
     if (!process.env.NOTION_TOKEN) {
       return NextResponse.json(
         { error: 'NOTION_TOKEN environment variable is not set' },
@@ -29,6 +28,7 @@ export async function GET(request: NextRequest) {
             { status: 400 }
           );
         }
+        
         const content = await getPageContent(pageId);
         return NextResponse.json({ content });
 
