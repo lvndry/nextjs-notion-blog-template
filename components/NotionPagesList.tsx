@@ -27,10 +27,10 @@ export default function NotionPagesList() {
     try {
       setLoading(true);
       setError(null);
-      
+
       const response = await fetch("/api/notion/pages?action=list");
       const data = await response.json();
-      
+
       if (data.error) {
         setError(data.error);
       } else {
@@ -129,7 +129,7 @@ export default function NotionPagesList() {
             {searchTerm ? 'No pages match your search' : 'No pages found'}
           </h3>
           <p className="text-gray-600 dark:text-gray-400">
-            {searchTerm 
+            {searchTerm
               ? 'Try adjusting your search terms'
               : 'Make sure your Notion integration has access to pages and try refreshing'
             }
