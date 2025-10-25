@@ -27,6 +27,8 @@ jobs:
 
       - name: Build project
         run: bun run build
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
 
       - name: Check for build artifacts
         run: |
@@ -59,6 +61,8 @@ jobs:
 
       - name: Verify build works
         run: bun run build
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
 
       - name: Test production build
         run: |
@@ -67,3 +71,5 @@ jobs:
           sleep 10
           curl -f http://localhost:3000 || exit 1
           pkill -f "bun run start"
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
