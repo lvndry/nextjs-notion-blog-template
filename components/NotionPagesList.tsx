@@ -1,48 +1,12 @@
 'use client';
 
-import { useEffect, useState } from "react";
+import { useNotionPages } from "@/hooks/useNotionPages";
+import { useState } from "react";
 import NotionPageCard from "./NotionPageCard";
 
-interface NotionPage {
-  id: string;
-  title: string;
-  url: string;
-  created_time: string;
-  last_edited_time: string;
-  properties: Record<string, unknown>;
-  parent: Record<string, unknown>;
-}
-
 export default function NotionPagesList() {
-  const [pages, setPages] = useState<NotionPage[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { pages, loading, error, refetch } = useNotionPages();
   const [searchTerm, setSearchTerm] = useState("");
-
-  useEffect(() => {
-    fetchPages();
-  }, []);
-
-  const fetchPages = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-
-      const response = await fetch("/api/notion/pages?action=list");
-      const data = await response.json();
-
-      if (data.error) {
-        setError(data.error);
-      } else {
-        setPages(data.pages || []);
-      }
-    } catch (err) {
-      setError("Failed to fetch pages from Notion");
-      console.error("Error fetching pages:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const filteredPages = pages.filter(page =>
     page.title.toLowerCase().includes(searchTerm.toLowerCase())
@@ -81,7 +45,7 @@ export default function NotionPagesList() {
           </ol>
         </div>
         <button
-          onClick={fetchPages}
+          onClick={refetch}
           className="mt-4 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors"
         >
           Try Again
@@ -110,7 +74,7 @@ export default function NotionPagesList() {
             className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
           <button
-            onClick={fetchPages}
+            onClick={refetch}
             className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
           >
             Refresh
