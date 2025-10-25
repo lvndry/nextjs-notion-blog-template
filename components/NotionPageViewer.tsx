@@ -13,7 +13,7 @@ export default function NotionPageViewer({ pageDetails, pageContent }: NotionPag
 
   function extractPageTitle (pageDetails: Record<string, unknown>): string {
     const properties = pageDetails.properties as Record<string, unknown>;
-    
+
     // Look for title property
     for (const [, value] of Object.entries(properties)) {
       if (value && typeof value === 'object' && 'type' in value) {
@@ -23,20 +23,140 @@ export default function NotionPageViewer({ pageDetails, pageContent }: NotionPag
         }
       }
     }
-    
+
     // Fallback to page ID if no title found
     return `Untitled Page (${(pageDetails.id as string).slice(0, 8)})`;
   };
 
 
 
+  function renderContentBlocks(blocks: Array<Record<string, unknown>>) {
+    console.log(blocks);
+    const result: React.ReactElement[] = [];
+    let i = 0;
+
+    while (i < blocks.length) {
+      const block = blocks[i];
+
+      if (block.type === 'bulleted_list_item') {
+        // Handle bulleted list items and render nested children inside each <li>
+        const listItems: React.ReactElement[] = [];
+        let currentIndex = i;
+
+        while (currentIndex < blocks.length && blocks[currentIndex].type === 'bulleted_list_item') {
+          const currentBlock = blocks[currentIndex];
+          const bulletedItem = currentBlock.bulleted_list_item as { rich_text?: Array<{ plain_text: string }> } | undefined;
+          const childrenBlocks = (currentBlock.children as Array<Record<string, unknown>> | undefined) || [];
+
+          const listItem = (
+            <li key={(currentBlock.id as string) || currentIndex} className="text-gray-800 dark:text-gray-200 mb-2">
+              <div className="flex items-start">
+                <span className="mr-2 text-gray-500 dark:text-gray-400">•</span>
+                <span>{getTextContent(bulletedItem?.rich_text)}</span>
+              </div>
+              {childrenBlocks.length > 0 && (
+                <div className="pl-6 mt-1">
+                  {renderContentBlocks(childrenBlocks)}
+                </div>
+              )}
+            </li>
+          );
+
+          listItems.push(listItem);
+          currentIndex++;
+        }
+
+        result.push(
+          <ul key={`bulleted-${i}`} className="list-none pl-4 mb-4 space-y-1">
+            {listItems}
+          </ul>
+        );
+        i = currentIndex;
+      } else if (block.type === 'numbered_list_item') {
+        // Handle numbered/lettered list items and render nested children inside each <li>
+        const listItems: React.ReactElement[] = [];
+        let currentIndex = i;
+        let itemNumber = 1;
+
+        // Determine list type based on content or context
+        // Only use letters if explicitly requested or if the content suggests it
+        const firstItem = block.numbered_list_item as { rich_text?: Array<{ plain_text: string }> } | undefined;
+        const firstItemText = firstItem?.rich_text?.[0]?.plain_text?.toLowerCase() || '';
+        const useLetters = firstItemText.includes('letter') || firstItemText.includes('alphabet') || firstItemText.includes('a)') || firstItemText.includes('b)');
+        const listType = useLetters ? 'letter' : 'number';
+
+        while (currentIndex < blocks.length && blocks[currentIndex].type === 'numbered_list_item') {
+          const currentBlock = blocks[currentIndex];
+          const numberedItem = currentBlock.numbered_list_item as { rich_text?: Array<{ plain_text: string }> } | undefined;
+          const childrenBlocks = (currentBlock.children as Array<Record<string, unknown>> | undefined) || [];
+
+          const marker = getListMarker(itemNumber, listType);
+
+          const listItem = (
+            <li key={(currentBlock.id as string) || currentIndex} className="text-gray-800 dark:text-gray-200 mb-2">
+              <div className="flex items-start">
+                <span className="mr-2 text-gray-500 dark:text-gray-400">{marker}.</span>
+                <span>{getTextContent(numberedItem?.rich_text)}</span>
+              </div>
+              {childrenBlocks.length > 0 && (
+                <div className="pl-6 mt-1">
+                  {renderContentBlocks(childrenBlocks)}
+                </div>
+              )}
+            </li>
+          );
+
+          listItems.push(listItem);
+          itemNumber++;
+          currentIndex++;
+        }
+
+        result.push(
+          <ol key={`numbered-${i}`} className="list-none pl-4 mb-4 space-y-1">
+            {listItems}
+          </ol>
+        );
+        i = currentIndex;
+      } else {
+        // Render non-list blocks normally
+        result.push(
+          <div key={(block.id as string) || i}>
+            {renderBlockContent(block)}
+          </div>
+        );
+        i++;
+      }
+    }
+
+    return result;
+  }
+
+  function getTextContent (textArray: Array<{ plain_text: string }> | undefined) {
+    if (!textArray || textArray.length === 0) return '';
+    return textArray.map((text, index) => (
+      <span key={index}>{text.plain_text}</span>
+    ));
+  }
+
+  function getListMarker(itemNumber: number, listType: 'number' | 'letter' = 'number'): string {
+    if (listType === 'letter') {
+      // Generate letter sequence: a, b, c, ..., z, aa, ab, ac, etc.
+      let result = '';
+      let num = itemNumber - 1; // Convert to 0-based index
+
+      do {
+        result = String.fromCharCode(97 + (num % 26)) + result; // 97 is 'a' in ASCII
+        num = Math.floor(num / 26) - 1;
+      } while (num >= 0);
+
+      return result;
+    }
+
+    // Default to numbers
+    return itemNumber.toString();
+  }
+
   function renderBlockContent (block: Record<string, unknown>) {
-    function getTextContent (textArray: Array<{ plain_text: string }> | undefined) {
-      if (!textArray || textArray.length === 0) return '';
-      return textArray.map((text, index) => (
-        <span key={index}>{text.plain_text}</span>
-      ));
-    };
 
 
     function hasTextContent (textArray: Array<{ plain_text: string }> | undefined) {
@@ -75,30 +195,14 @@ export default function NotionPageViewer({ pageDetails, pageContent }: NotionPag
             {getTextContent(heading3?.text)}
           </h3>
         );
-      case 'bulleted_list_item':
-        const bulletedItem = block.bulleted_list_item as { rich_text?: Array<{ plain_text: string }> } | undefined;
-        return (
-          <li className="text-gray-800 dark:text-gray-200 mb-2 flex items-start">
-            <span className="mr-2 text-gray-500 dark:text-gray-400">•</span>
-            <span>{getTextContent(bulletedItem?.rich_text)}</span>
-          </li>
-        );
-      case 'numbered_list_item':
-        const numberedItem = block.numbered_list_item as { rich_text?: Array<{ plain_text: string }> } | undefined;
-        return (
-          <li className="text-gray-800 dark:text-gray-200 mb-2 flex items-start">
-            <span className="mr-2 text-gray-500 dark:text-gray-400">1.</span>
-            <span>{getTextContent(numberedItem?.rich_text)}</span>
-          </li>
-        );
       case 'to_do':
         const todoItem = block.to_do as { rich_text?: Array<{ plain_text: string }>; checked?: boolean } | undefined;
         return (
           <div className="flex items-start gap-3 text-gray-800 dark:text-gray-200 mb-3">
-            <input 
-              type="checkbox" 
-              checked={todoItem?.checked || false} 
-              readOnly 
+            <input
+              type="checkbox"
+              checked={todoItem?.checked || false}
+              readOnly
               className="mt-1 rounded border-gray-300 dark:border-gray-600"
             />
             <span className={todoItem?.checked ? 'line-through text-gray-500 dark:text-gray-400' : ''}>
@@ -216,11 +320,7 @@ export default function NotionPageViewer({ pageDetails, pageContent }: NotionPag
               </div>
             ) : (
               <div className="space-y-2">
-                {pageContent.map((block, index) => (
-                  <div key={(block.id as string) || index}>
-                    {renderBlockContent(block)}
-                  </div>
-                ))}
+                {renderContentBlocks(pageContent)}
               </div>
             )}
           </div>

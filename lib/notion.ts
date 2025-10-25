@@ -18,6 +18,8 @@ export interface NotionBlock {
   id: string;
   type: string;
   has_children: boolean;
+  // When present, contains recursively fetched child blocks
+  children?: NotionBlock[];
   [key: string]: unknown;
 }
 
@@ -50,7 +52,7 @@ export async function searchAllPages(): Promise<NotionPage[]> {
 
     const pages: NotionPage[] = response.results.map((page) => {
       const urlFriendlyId = page.id.replace(/-/g, '');
-      
+
       return {
         id: urlFriendlyId,
         title: extractPageTitle(page as NotionPageResponse),
@@ -72,7 +74,7 @@ export async function searchAllPages(): Promise<NotionPage[]> {
 // Extract page title from properties
 function extractPageTitle(page: NotionPageResponse): string {
   const properties = page.properties;
-  
+
   for (const [, value] of Object.entries(properties)) {
     if (value && typeof value === 'object' && 'type' in value) {
       const prop = value as { type: string; title?: Array<{ plain_text: string }> };
@@ -81,12 +83,33 @@ function extractPageTitle(page: NotionPageResponse): string {
       }
     }
   }
-  
+
   // Fallback to page ID if no title found
   return `Untitled Page (${page.id.slice(0, 8)})`;
 }
 
 // Get page content (blocks) for a specific page
+// Recursively fetch children for a block
+async function fetchChildrenRecursively(blockId: string): Promise<NotionBlock[]> {
+  const response = await notion.blocks.children.list({
+    block_id: blockId,
+    page_size: 100
+  });
+
+  const children = response.results as NotionBlockResponse[];
+
+  const withNested: NotionBlock[] = [];
+  for (const child of children) {
+    const childBlock: NotionBlock = { ...(child as NotionBlockResponse) } as NotionBlock;
+    if (child.has_children) {
+      childBlock.children = await fetchChildrenRecursively(child.id);
+    }
+    withNested.push(childBlock);
+  }
+
+  return withNested;
+}
+
 export async function getPageContent(pageId: string): Promise<NotionBlock[]> {
   try {
     const response = await notion.blocks.children.list({
@@ -94,7 +117,18 @@ export async function getPageContent(pageId: string): Promise<NotionBlock[]> {
       page_size: 100
     });
 
-    return response.results as NotionBlockResponse[];
+    const topLevelBlocks = response.results as NotionBlockResponse[];
+
+    const withChildren: NotionBlock[] = [];
+    for (const block of topLevelBlocks) {
+      const topBlock: NotionBlock = { ...(block as NotionBlockResponse) } as NotionBlock;
+      if (block.has_children) {
+        topBlock.children = await fetchChildrenRecursively(block.id);
+      }
+      withChildren.push(topBlock);
+    }
+
+    return withChildren;
   } catch (error) {
     console.error('Error fetching page content:', error);
     throw new Error('Failed to fetch page content');
