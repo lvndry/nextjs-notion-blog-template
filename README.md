@@ -1,36 +1,110 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Notion Pages Viewer
 
-## Getting Started
+A Next.js application that uses the Notion API to retrieve and display all pages accessible to your Notion integration.
 
-First, run the development server:
+## Features
+
+- 🔍 **Search and View Pages**: Browse all Notion pages accessible to your integration
+- 📄 **Page Content Preview**: View the content of individual pages without leaving the app
+- 🔗 **Direct Notion Links**: Open pages directly in Notion
+- 🎨 **Modern UI**: Clean, responsive interface with dark mode support
+- ⚡ **Real-time Updates**: Refresh to get the latest pages and content
+
+## Setup Instructions
+
+### 1. Install Dependencies
+
+```bash
+npm install
+```
+
+### 2. Create Notion Integration
+
+1. Go to [https://www.notion.so/my-integrations](https://www.notion.so/my-integrations)
+2. Click "New integration"
+3. Give it a name (e.g., "Pages Viewer")
+4. Select the workspace you want to access
+5. Click "Submit"
+6. Copy the "Internal Integration Token"
+
+### 3. Configure Environment
+
+1. Copy the example environment file:
+   ```bash
+   cp .env.example .env.local
+   ```
+
+2. Edit `.env.local` and add your Notion token:
+   ```
+   NOTION_TOKEN=your_actual_token_here
+   ```
+
+### 4. Share Pages with Integration
+
+For each page you want to view in the app:
+
+1. Open the page in Notion
+2. Click the "Share" button (top right)
+3. Click "Add connections"
+4. Search for and select your integration
+5. Click "Confirm"
+
+### 5. Run the Application
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to view the application.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## API Endpoints
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The application includes the following API routes:
+
+- `GET /api/notion/pages?action=list` - Get all accessible pages
+- `GET /api/notion/pages?action=content&pageId=<id>` - Get page content
+- `GET /api/notion/pages?action=details&pageId=<id>` - Get page details
+
+## Supported Block Types
+
+The application can display content from various Notion block types:
+
+- Paragraphs
+- Headings (H1, H2, H3)
+- Bulleted lists
+- Numbered lists
+- To-do items
+- And more...
+
+## Troubleshooting
+
+### "NOTION_TOKEN environment variable is not set"
+
+- Make sure you've created a `.env.local` file
+- Verify the token is correctly set in the file
+- Restart your development server
+
+### "No pages found"
+
+- Ensure your integration has been shared with the pages you want to view
+- Check that the integration has the correct permissions
+- Try refreshing the page
+
+### Pages not loading
+
+- Verify your Notion token is valid
+- Check that the integration hasn't been revoked
+- Ensure you have internet connectivity
+
+## Built With
+
+- [Next.js 16](https://nextjs.org/) - React framework
+- [Notion API](https://developers.notion.com/) - Official Notion API
+- [Tailwind CSS](https://tailwindcss.com/) - Styling
+- [TypeScript](https://www.typescriptlang.org/) - Type safety
 
 ## Learn More
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- [Notion API Documentation](https://developers.notion.com/)
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Notion API Working with Page Content](https://developers.notion.com/docs/working-with-page-content)
