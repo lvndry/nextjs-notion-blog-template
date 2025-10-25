@@ -66,38 +66,44 @@ export default function NotionPageCard({ page }: NotionPageCardProps) {
   }, [parent]);
 
   return (
-    <div className="group rounded-xl border border-zinc-200 bg-white p-5 transition-shadow hover:shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+    <div className="group rounded-xl border border-zinc-200 bg-white p-4 sm:p-5 transition-shadow hover:shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
       {page.id ? (
         <Link href={`/page/${page.id}`} className="block">
-          <h3 className="text-lg font-medium text-zinc-900 group-hover:underline dark:text-white">
+          <h3 className="text-base sm:text-lg font-medium text-zinc-900 group-hover:underline dark:text-white leading-tight">
             {page.title}
           </h3>
-          <div className="mt-2 flex items-center gap-3 text-sm text-zinc-500 dark:text-zinc-400">
+          <div className="mt-2 flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">
             <span>{formatDate(page.created_time)}</span>
             {isPageParent(parent) && (
-              <span>· {parentName ?? "Parent"}</span>
+              <span className="hidden sm:inline">· {parentName ?? "Parent"}</span>
+            )}
+            {isPageParent(parent) && (
+              <span className="sm:hidden">{parentName ?? "Parent"}</span>
             )}
           </div>
         </Link>
       ) : (
         <div>
-          <h3 className="text-lg font-medium text-zinc-900 dark:text-white">
+          <h3 className="text-base sm:text-lg font-medium text-zinc-900 dark:text-white leading-tight">
             {page.title}
           </h3>
-          <div className="mt-2 flex items-center gap-3 text-sm text-zinc-500 dark:text-zinc-400">
+          <div className="mt-2 flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">
             <span>{formatDate(page.created_time)}</span>
             {isPageParent(parent) && (
-              <span>· {parentName ?? "Parent"}</span>
+              <span className="hidden sm:inline">· {parentName ?? "Parent"}</span>
+            )}
+            {isPageParent(parent) && (
+              <span className="sm:hidden">{parentName ?? "Parent"}</span>
             )}
           </div>
         </div>
       )}
-      <div className="mt-4 flex justify-end opacity-0 transition-opacity group-hover:opacity-100">
+      <div className="mt-3 sm:mt-4 flex justify-end opacity-0 transition-opacity group-hover:opacity-100">
         <a
           href={page.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+          className="text-xs sm:text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white min-h-[44px] flex items-center"
         >
           Open in Notion →
         </a>

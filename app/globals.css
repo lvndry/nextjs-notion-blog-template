@@ -23,4 +23,37 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Arial, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Mobile-first improvements */
+@media (max-width: 640px) {
+  /* Ensure proper touch targets */
+  button, a, input, select, textarea {
+    min-height: 44px;
+  }
+
+  /* Improve text readability on mobile */
+  p, li, span {
+    line-height: 1.6;
+  }
+
+  /* Better spacing for mobile */
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+/* Prevent horizontal scroll on mobile */
+html, body {
+  overflow-x: hidden;
+}
+
+/* Improve focus states for accessibility */
+button:focus-visible, a:focus-visible, input:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
 }

@@ -96,32 +96,32 @@ export default async function NotionPage({ params }: PageProps) {
             <div className="absolute bottom-0 left-1/2 h-[500px] w-[1000px] -translate-x-1/2 rounded-full bg-linear-to-tr from-fuchsia-400/10 via-purple-400/10 to-emerald-400/10 blur-3xl" />
           </div>
         )}
-        <div className="relative z-10 container mx-auto px-4 pt-16 pb-10 sm:pt-24 sm:pb-16">
+        <div className="relative z-10 container mx-auto px-4 pt-12 pb-8 sm:pt-16 sm:pb-10 md:pt-24 md:pb-16">
           <div className="max-w-3xl">
             <Link
               href="/"
-              className={`inline-flex items-center gap-2 transition-colors ${coverUrl ? 'text-white/80 hover:text-white' : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white'}`}
+              className={`inline-flex items-center gap-2 transition-colors min-h-[44px] ${coverUrl ? 'text-white/80 hover:text-white' : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white'}`}
             >
               <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
               Back
             </Link>
-            <div className="mt-4 flex items-center gap-3">
+            <div className="mt-3 sm:mt-4 flex items-center gap-2 sm:gap-3">
               {icon && (
-                <span className="text-4xl sm:text-5xl">{icon}</span>
+                <span className="text-3xl sm:text-4xl md:text-5xl">{icon}</span>
               )}
-              <h1 className={`text-4xl font-semibold leading-tight sm:text-5xl ${coverUrl ? 'text-white' : 'text-zinc-900 dark:text-white'}`}>
+              <h1 className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold leading-tight ${coverUrl ? 'text-white' : 'text-zinc-900 dark:text-white'}`}>
                 {title}
               </h1>
             </div>
             {notionUrl && (
-              <div className="mt-6 flex gap-3">
+              <div className="mt-4 sm:mt-6 flex gap-3">
                 <a
                   href={notionUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`${coverUrl ? 'border-white/30 bg-white/10 text-white hover:bg-white/20' : 'border-zinc-300 bg-white text-zinc-900 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-white dark:hover:bg-zinc-800'} inline-flex items-center justify-center rounded-md border px-4 py-2 text-sm backdrop-blur`}
+                  className={`${coverUrl ? 'border-white/30 bg-white/10 text-white hover:bg-white/20' : 'border-zinc-300 bg-white text-zinc-900 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-white dark:hover:bg-zinc-800'} inline-flex items-center justify-center rounded-md border px-4 py-2 text-sm backdrop-blur min-h-[44px]`}
                 >
                   Open in Notion
                 </a>
@@ -132,8 +132,8 @@ export default async function NotionPage({ params }: PageProps) {
       </section>
 
       {/* Content */}
-      <section className="container mx-auto px-4 py-8 sm:py-12">
-        <div className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+      <section className="container mx-auto px-4 py-6 sm:py-8 md:py-12">
+        <div className="rounded-2xl border border-zinc-200 bg-white p-4 sm:p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
           <NotionPageViewer pageDetails={pageDetails} pageContent={pageContent} />
         </div>
       </section>
