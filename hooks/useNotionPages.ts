@@ -1,5 +1,5 @@
-import { fetchNotionPages, type NotionPage } from '@/lib/notion-client';
-import { cache, useCallback, useEffect, useState } from 'react';
+import { cache, useCallback, useEffect, useState } from "react";
+import { fetchNotionPages, type NotionPage } from "../lib/notion-client";
 
 interface UseNotionPagesReturn {
   pages: NotionPage[];
@@ -32,8 +32,8 @@ export function useNotionPages(): UseNotionPagesReturn {
       const pages = await cachedFetch();
       setPages(pages);
     } catch (err) {
-      setError("Failed to fetch pages from Notion");
-      console.error("Error fetching pages:", err);
+      setError(`${err} Failed to fetch pages from Notion`);
+      console.error(`${err} Error fetching pages:`);
     } finally {
       setLoading(false);
     }

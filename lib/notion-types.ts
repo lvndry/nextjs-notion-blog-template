@@ -9,51 +9,51 @@ export type BaseNode = {
 };
 
 export type ParagraphNode = BaseNode & {
-  type: 'paragraph';
+  type: "paragraph";
   paragraph: { text?: NotionRichText[]; rich_text?: NotionRichText[] };
 };
 
 export type Heading1Node = BaseNode & {
-  type: 'heading_1';
+  type: "heading_1";
   heading_1: { text?: NotionRichText[]; rich_text?: NotionRichText[] };
 };
 
 export type Heading2Node = BaseNode & {
-  type: 'heading_2';
+  type: "heading_2";
   heading_2: { text?: NotionRichText[]; rich_text?: NotionRichText[] };
 };
 
 export type Heading3Node = BaseNode & {
-  type: 'heading_3';
+  type: "heading_3";
   heading_3: { text?: NotionRichText[]; rich_text?: NotionRichText[] };
 };
 
 export type ToDoNode = BaseNode & {
-  type: 'to_do';
+  type: "to_do";
   to_do: { rich_text?: NotionRichText[]; checked?: boolean };
 };
 
 export type CodeNode = BaseNode & {
-  type: 'code';
+  type: "code";
   code: { rich_text?: NotionRichText[]; language?: string };
 };
 
 export type QuoteNode = BaseNode & {
-  type: 'quote';
+  type: "quote";
   quote: { rich_text?: NotionRichText[] };
 };
 
 export type DividerNode = BaseNode & {
-  type: 'divider';
+  type: "divider";
 };
 
 export type ChildPageNode = BaseNode & {
-  type: 'child_page';
+  type: "child_page";
   child_page: { title?: string };
 };
 
 export type ImageNode = BaseNode & {
-  type: 'image';
+  type: "image";
   image: {
     type?: 'file' | 'external';
     file?: { url?: string };
@@ -63,43 +63,43 @@ export type ImageNode = BaseNode & {
 };
 
 export type TableRowNode = BaseNode & {
-  type: 'table_row';
+  type: "table_row";
   table_row: { cells?: Array<NotionRichText[]> };
 };
 
 export type TableNode = BaseNode & {
-  type: 'table';
+  type: "table";
   table: { has_column_header?: boolean; has_row_header?: boolean };
   children?: TableRowNode[];
 };
 
 export type CalloutNode = BaseNode & {
-  type: 'callout';
+  type: "callout";
   callout: { icon?: { emoji?: string }; rich_text?: NotionRichText[] };
 };
 
 export type ColumnListNode = BaseNode & {
-  type: 'column_list';
+  type: "column_list";
   children?: Array<BaseNode & { children?: NotionBlock[] }>;
 };
 
 export type BulletedListItemNode = BaseNode & {
-  type: 'bulleted_list_item';
+  type: "bulleted_list_item";
   bulleted_list_item: { rich_text?: NotionRichText[] };
 };
 
 export type NumberedListItemNode = BaseNode & {
-  type: 'numbered_list_item';
+  type: "numbered_list_item";
   numbered_list_item: { rich_text?: NotionRichText[] };
 };
 
 export type ToggleNode = BaseNode & {
-  type: 'toggle';
+  type: "toggle";
   toggle: { rich_text?: NotionRichText[] };
 };
 
 export type TableOfContentsNode = BaseNode & {
-  type: 'table_of_contents';
+  type: "table_of_contents";
   table_of_contents: Record<string, never>;
 };
 

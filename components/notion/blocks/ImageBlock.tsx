@@ -1,11 +1,11 @@
 'use client';
 
-import type { NotionBlock } from '../../../lib/notion-types';
-import { RichText } from '../RichText';
+import type { NotionBlock } from "../../../lib/notion-types";
+import { RichText } from "../RichText";
 
 export function ImageBlock({ block }: { block: NotionBlock }) {
-  const image = (block as Extract<NotionBlock, { type: 'image' }>).image;
-  const src = image?.type === 'external' ? image?.external?.url : image?.file?.url;
+  const image = (block as Extract<NotionBlock, { type: "image" }>).image;
+  const src = image?.type === "external" ? image?.external?.url : image?.file?.url;
 
   if (!src) return null;
 

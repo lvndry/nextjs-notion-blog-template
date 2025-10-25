@@ -1,12 +1,12 @@
 'use client';
 
-import Link from 'next/link';
-import type { NotionBlock } from '../../../lib/notion-types';
+import Link from "next/link";
+import type { NotionBlock } from "../../../lib/notion-types";
 
 export function ChildPageBlock({ block }: { block: NotionBlock }) {
-  const { child_page, id } = block as Extract<NotionBlock, { type: 'child_page' }>;
+  const { child_page, id } = block as Extract<NotionBlock, { type: "child_page" }>;
 
-  const title = child_page?.title || 'Untitled';
+  const title = child_page?.title || "Untitled";
   const idNoDash = String(id || '').replace(/-/g, '');
 
   return (

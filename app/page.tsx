@@ -1,5 +1,4 @@
 import NotionPagesList from "@/components/NotionPagesList";
-import Image from "next/image";
 import Link from "next/link";
 
 export const revalidate = 3600;
@@ -7,7 +6,6 @@ export const revalidate = 3600;
 export default function Home() {
   return (
     <div className="min-h-screen bg-zinc-50 font-sans dark:bg-black">
-      {/* Hero: premium startup landing */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 -z-10">
           <div className="absolute -top-40 left-1/2 h-[900px] w-[1400px] -translate-x-1/2 rounded-full bg-linear-to-r from-indigo-500/20 via-sky-400/20 to-cyan-400/20 blur-3xl" />
@@ -29,13 +27,6 @@ export default function Home() {
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <a href="https://github.com/lvndry/nextjs-notion-blog-template" className="inline-flex items-center justify-center rounded-md bg-zinc-900 px-5 py-3 text-white shadow-lg shadow-zinc-900/10 hover:bg-zinc-800 dark:bg-white dark:text-black dark:hover:bg-zinc-200">Start Now</a>
                 <a href="https://nextjs-notion-blog-template-eight.vercel.app" className="inline-flex items-center justify-center rounded-md border border-zinc-300 bg-white px-5 py-3 text-zinc-900 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-white dark:hover:bg-zinc-800">See it in action</a>
-              </div>
-              {/* Social proof */}
-              <div className="mt-10 grid grid-cols-2 items-center gap-6 opacity-80 sm:grid-cols-4">
-                <Image src="/next.svg" alt="Next.js" width={28} height={28} className="h-7 w-auto" />
-                <Image src="/vercel.svg" alt="Vercel" width={28} height={28} className="h-7 w-auto" />
-                <Image src="/globe.svg" alt="Web" width={28} height={28} className="h-7 w-auto" />
-                <Image src="/window.svg" alt="Window" width={28} height={28} className="h-7 w-auto" />
               </div>
             </div>
             {/* Mock screenshot frame */}
@@ -68,7 +59,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Features: premium icon cards */}
+      {/* Features: icon cards */}
       <section className="container mx-auto px-4 py-16 sm:py-20">
         <div className="mb-10 max-w-2xl">
           <h2 className="text-2xl font-semibold text-zinc-900 dark:text-white">Everything you need to ship content fast</h2>

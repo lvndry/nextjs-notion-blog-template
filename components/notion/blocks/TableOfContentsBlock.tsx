@@ -1,7 +1,7 @@
 'use client';
 
-import { useMemo } from 'react';
-import type { NotionBlock } from '../../../lib/notion-types';
+import { useMemo } from "react";
+import type { NotionBlock } from "../../../lib/notion-types";
 
 interface TocItem {
   id: string;
@@ -11,31 +11,31 @@ interface TocItem {
 }
 
 function extractTextFromRichText(richText?: Array<{ plain_text?: string }>): string {
-  if (!richText) return '';
-  return richText.map(item => item.plain_text || '').join('');
+  if (!richText) return "";
+  return richText.map(item => item.plain_text || "").join("");
 }
 
 function extractHeadingsFromBlocks(blocks: NotionBlock[]): TocItem[] {
   const headings: TocItem[] = [];
 
   function processBlock(block: NotionBlock) {
-    if (block.type === 'heading_1' || block.type === 'heading_2' || block.type === 'heading_3') {
+    if (block.type === "heading_1" || block.type === "heading_2" || block.type === "heading_3") {
       let headingData: { rich_text?: Array<{ plain_text?: string }> } | undefined;
 
-      if (block.type === 'heading_1') {
-        headingData = (block as Extract<NotionBlock, { type: 'heading_1' }>).heading_1;
-      } else if (block.type === 'heading_2') {
-        headingData = (block as Extract<NotionBlock, { type: 'heading_2' }>).heading_2;
-      } else if (block.type === 'heading_3') {
-        headingData = (block as Extract<NotionBlock, { type: 'heading_3' }>).heading_3;
+      if (block.type === "heading_1") {
+        headingData = (block as Extract<NotionBlock, { type: "heading_1" }>).heading_1;
+      } else if (block.type === "heading_2") {
+        headingData = (block as Extract<NotionBlock, { type: "heading_2" }>).heading_2;
+      } else if (block.type === "heading_3") {
+        headingData = (block as Extract<NotionBlock, { type: "heading_3" }>).heading_3;
       }
 
       const text = extractTextFromRichText(headingData?.rich_text);
 
       if (text.trim()) {
-        const level = block.type === 'heading_1' ? 1 : block.type === 'heading_2' ? 2 : 3;
+        const level = block.type === "heading_1" ? 1 : block.type === "heading_2" ? 2 : 3;
         // Generate the same ID as the heading blocks
-        const elementId = `heading-${text.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '')}`;
+        const elementId = `heading-${text.toLowerCase().replace(/[^a-z0-9]/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "")}`;
 
         headings.push({
           id: elementId,
@@ -65,19 +65,19 @@ export function TableOfContentsBlock({ allBlocks }: { block: NotionBlock; allBlo
   function scrollToHeading(elementId: string) {
     const element = document.getElementById(elementId);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   };
 
   function getIndentClass(level: number) {
     switch (level) {
-      case 1: return 'ml-0';
+      case 1: return "ml-0";
       case 2: return 'ml-4';
       case 3: return 'ml-8';
-      case 4: return 'ml-12';
-      case 5: return 'ml-16';
-      case 6: return 'ml-20';
-      default: return 'ml-0';
+      case 4: return "ml-12";
+      case 5: return "ml-16";
+      case 6: return "ml-20";
+      default: return "ml-0";
     }
   };
 

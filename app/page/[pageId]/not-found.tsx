@@ -14,7 +14,7 @@ export default function NotFound() {
               The Notion page you're looking for doesn't exist or you don't have access to it.
             </p>
           </div>
-          
+
           <div className="space-y-4">
             <Link
               href="/"
@@ -25,7 +25,7 @@ export default function NotFound() {
               </svg>
               Back to Pages
             </Link>
-            
+
             <div className="text-sm text-gray-500 dark:text-gray-400">
               <p>Possible reasons:</p>
               <ul className="list-disc list-inside mt-2 space-y-1">

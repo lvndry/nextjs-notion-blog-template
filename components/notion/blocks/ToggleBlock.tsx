@@ -1,13 +1,13 @@
 'use client';
 
-import { useState } from 'react';
-import type { NotionBlock } from '../../../lib/notion-types';
-import { BlockRenderer } from '../BlockRenderer';
-import { RichText } from '../RichText';
+import { useState } from "react";
+import type { NotionBlock } from "../../../lib/notion-types";
+import { BlockRenderer } from "../BlockRenderer";
+import { RichText } from "../RichText";
 
 export function ToggleBlock({ block }: { block: NotionBlock }) {
   const [isOpen, setIsOpen] = useState(false);
-  const toggle = (block as Extract<NotionBlock, { type: 'toggle' }>).toggle;
+  const toggle = (block as Extract<NotionBlock, { type: "toggle" }>).toggle;
   const children = block.children || [];
 
   return (
@@ -20,7 +20,7 @@ export function ToggleBlock({ block }: { block: NotionBlock }) {
         <div className="shrink-0 mt-1">
           <svg
             className={`w-4 h-4 text-gray-500 dark:text-gray-400 transition-transform ${
-              isOpen ? 'rotate-90' : ''
+              isOpen ? "rotate-90" : ""
             }`}
             fill="none"
             stroke="currentColor"

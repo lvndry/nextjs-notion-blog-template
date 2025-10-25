@@ -58,8 +58,8 @@ export async function searchAllPages(): Promise<NotionPage[]> {
 
     return pages;
   } catch (error) {
-    console.error('Error searching pages:', error);
-    throw new Error('Failed to fetch pages from Notion');
+    console.error(`${error} Error searching pages:`);
+    throw new Error(`${error} Failed to fetch pages from Notion`);
   }
 }
 
@@ -71,7 +71,7 @@ function extractPageTitle(page: NotionPageResponse): string {
     if (value && typeof value === "object" && "type" in value) {
       const prop = value as { type: string; title?: Array<{ plain_text: string }> };
       if (prop.type === "title" && prop.title && prop.title.length > 0) {
-        return prop.title.map((t) => t.plain_text).join('');
+        return prop.title.map((t) => t.plain_text).join("");
       }
     }
   }
@@ -122,8 +122,8 @@ export async function getPageContent(pageId: string): Promise<NotionBlock[]> {
 
     return withChildren;
   } catch (error) {
-    console.error("Error fetching page content:", error);
-    throw new Error("Failed to fetch page content");
+    console.error(`${error} Error fetching page content:`);
+    throw new Error(`${error} Failed to fetch page content`);
   }
 }
 
@@ -133,7 +133,7 @@ export async function getPageDetails(pageId: string) {
     const page = await notion.pages.retrieve({ page_id: pageId });
     return page;
   } catch (error) {
-    console.error("Error fetching page details:", error);
-    throw new Error("Failed to fetch page details");
+    console.error(`${error} Error fetching page details:`);
+    throw new Error(`${error} Failed to fetch page details`);
   }
 }
