@@ -1,7 +1,7 @@
 'use client';
 
+import type { NotionBlockWithChildren } from "@/lib/notion";
 import Link from "next/link";
-import type { NotionBlockWithChildren } from "../../../lib/notion";
 
 export function ChildPageBlock({ block }: { block: NotionBlockWithChildren }) {
   const { child_page, id } = block as Extract<NotionBlockWithChildren, { type: "child_page" }>;

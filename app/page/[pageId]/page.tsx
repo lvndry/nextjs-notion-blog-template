@@ -1,7 +1,6 @@
 import NotionPageViewer from "@/components/NotionPageViewer";
 import { getPageContent, getPageDetails, searchAllPages, type NotionPageDetails } from "@/lib/notion";
 import { isValidUUID, normalizeUUID } from "@/lib/uuid";
-import type { TitlePropertyItemObjectResponse } from "@notionhq/client";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -232,11 +231,9 @@ function extractPageTitle(pageDetails: NotionPageDetails): string {
 
   for (const [, value] of Object.entries(properties)) {
     if (value && typeof value === "object" && "type" in value) {
-      const prop = value as { type: string };
-      if (prop.type === "title") {
-        const titleProp = value as unknown as TitlePropertyItemObjectResponse;
-        if (titleProp.title && Array.isArray(titleProp.title) && titleProp.title.length > 0) {
-          return titleProp.title.map(t => t.plain_text || '').join('');
+      if (value.type === "title") {
+        if (value.title && Array.isArray(value.title) && value.title.length > 0) {
+          return value.title.map(t => t.plain_text || '').join('');
         }
       }
     }

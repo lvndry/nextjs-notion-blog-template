@@ -34,7 +34,7 @@ export function TableBlock({ block }: { block: NotionBlockWithChildren }) {
         )}
         <tbody>
           {rows.slice(isHeader ? 1 : 0).map((row, rIdx) => (
-            <tr key={(row.id as string) || rIdx}>{renderRowCells(row)}</tr>
+            <tr key={(row.id ?? rIdx)}>{renderRowCells(row)}</tr>
           ))}
         </tbody>
       </table>

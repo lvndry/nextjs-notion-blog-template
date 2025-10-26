@@ -1,6 +1,6 @@
 'use client';
 
-import type { NotionBlockWithChildren } from "../../../lib/notion";
+import type { NotionBlockWithChildren } from "@/lib/notion";
 import { RichText } from "../RichText";
 
 export function ParagraphBlock({ block }: { block: NotionBlockWithChildren }) {

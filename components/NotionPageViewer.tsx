@@ -2,7 +2,6 @@
 
 import { formatDate } from "@/lib/date";
 import type { NotionBlockWithChildren, NotionPageDetails } from "@/lib/notion";
-import type { TitlePropertyItemObjectResponse } from "@notionhq/client";
 import { useState } from "react";
 import { NotionBlocks } from "./notion/NotionBlocks";
 
@@ -20,11 +19,9 @@ export default function NotionPageViewer({ pageDetails, pageContent }: NotionPag
     // Look for title property
     for (const [, value] of Object.entries(properties)) {
       if (value && typeof value === "object" && "type" in value) {
-        const prop = value as { type: string };
-        if (prop.type === 'title') {
-          const titleProp = value as unknown as TitlePropertyItemObjectResponse;
-          if (titleProp.title && Array.isArray(titleProp.title) && titleProp.title.length > 0) {
-            return titleProp.title.map(t => t.plain_text || '').join('');
+        if (value.type === 'title') {
+          if (value.title && Array.isArray(value.title) && value.title.length > 0) {
+            return value.title.map((t: { plain_text: string }) => t.plain_text || '').join('');
           }
         }
       }
@@ -35,9 +32,9 @@ export default function NotionPageViewer({ pageDetails, pageContent }: NotionPag
   };
 
   const pageTitle = extractPageTitle(pageDetails);
-  const pageUrl = pageDetails.url as string;
-  const createdTime = pageDetails.created_time as string;
-  const lastEditedTime = pageDetails.last_edited_time as string;
+  const pageUrl = pageDetails.url;
+  const createdTime = pageDetails.created_time;
+  const lastEditedTime = pageDetails.last_edited_time;
 
   return (
     <div className="max-w-4xl mx-auto">

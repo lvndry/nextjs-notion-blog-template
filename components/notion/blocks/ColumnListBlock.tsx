@@ -1,6 +1,6 @@
 'use client';
 
-import type { NotionBlockWithChildren } from "../../../lib/notion";
+import type { NotionBlockWithChildren } from "@/lib/notion";
 import { NotionBlocks } from "../NotionBlocks";
 
 export function ColumnListBlock({ block }: { block: NotionBlockWithChildren }) {
@@ -9,8 +9,8 @@ export function ColumnListBlock({ block }: { block: NotionBlockWithChildren }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
       {columns.map((col, idx) => (
-        <div key={(col.id as string) || idx}>
-          <NotionBlocks blocks={((col as { children?: NotionBlockWithChildren[] }).children || [])} />
+        <div key={(col.id ?? idx)}>
+          <NotionBlocks blocks={col.children ?? []} />
         </div>
       ))}
     </div>

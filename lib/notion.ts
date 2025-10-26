@@ -1,6 +1,6 @@
 import { BlockObjectResponse, Client, PageObjectResponse } from "@notionhq/client";
 
-export type NotionPageDetails = Pick<PageObjectResponse, 'id' | 'url' | 'cover' | 'icon' | 'properties' | 'created_time' | 'last_edited_time'>;
+export type NotionPageDetails = Pick<PageObjectResponse, "id" | "url" | "cover" | "icon" | "properties" | "created_time" | "last_edited_time">;
 
 // Extended block type that includes children for our use case
 export type NotionBlockWithChildren = BlockObjectResponse & {
@@ -35,14 +35,14 @@ export async function searchAllPages(): Promise<NotionPage[]> {
   try {
     const response = await notion.search({
       filter: {
-        property: 'object',
-        value: 'page'
+        property: "object",
+        value: "page"
       },
       page_size: 100
     });
 
     const pages: NotionPage[] = response.results.map((page) => {
-      const urlFriendlyId = page.id.replace(/-/g, '');
+      const urlFriendlyId = page.id.replace(/-/g, "");
 
       return {
         id: urlFriendlyId,
