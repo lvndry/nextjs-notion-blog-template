@@ -24,11 +24,11 @@ This template provides everything you need to get started with a Notion-powered 
 
 ## Setup Instructions
 
-### 1. Clone and Install
+### 1. Fork and Clone
 
 ```bash
-# Clone this template
-git clone https://github.com/lvndry/nextjs-notion-blog-template.git
+# Fork this repository on GitHub first, then clone your fork
+git clone https://github.com/YOUR_USERNAME/nextjs-notion-blog-template.git
 cd nextjs-notion-blog-template
 
 # Install dependencies
@@ -82,75 +82,6 @@ bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) to see your blog!
-
-## 🎨 Customization Guide
-
-This template is designed to be easily customizable. Here's what you can modify:
-
-### 1. Styling and Theme
-
-The app uses **Tailwind CSS** with custom CSS variables for easy theming:
-
-- **Colors**: Modify CSS variables in `app/globals.css` for custom color schemes
-- **Typography**: Change fonts in the CSS variables or add Google Fonts
-- **Layout**: Adjust spacing, containers, and responsive breakpoints
-- **Dark Mode**: Customize dark mode colors in the CSS variables
-
-### 2. Components
-
-All components are in the `/components` directory:
-
-- **`NotionPagesList.tsx`**: Main page listing component - customize grid layout, search functionality, and pagination
-- **`NotionPageCard.tsx`**: Individual page card component - modify card styling, metadata display, and hover effects
-- **`NotionPageViewer.tsx`**: Full page content renderer - customize content layout and styling
-- **`DebugInfo.tsx`**: Development debugging component
-
-### 3. Page Structure
-
-- **`app/page.tsx`**: Homepage layout - add hero sections, navigation, or custom content
-- **`app/page/[pageId]/page.tsx`**: Individual page layout - add breadcrumbs, back buttons, or custom metadata
-- **`app/layout.tsx`**: Global layout and metadata - customize site-wide elements
-
-### 4. Notion Integration
-
-The Notion API integration is in `/lib/notion.ts`:
-
-- **`searchAllPages()`**: Fetch all accessible pages - add custom filtering, sorting, or pagination
-- **`getPageContent()`**: Get page content blocks - customize content processing
-- **`getPageDetails()`**: Get page metadata - add custom property handling
-
-### 5. Content Rendering
-
-Customize how Notion blocks are rendered in `/components/notion/`:
-
-- **`BlockRenderer.tsx`**: Main block renderer - add support for new block types
-- **`blocks/`**: Individual block components - customize how each block type is displayed
-- **`RichText.tsx`**: Text formatting - modify how rich text is rendered
-
-### 6. Common Customizations
-
-- **Add navigation**: Create header/navigation components
-- **Page categories**: Display Notion properties as tags or filters
-- **Custom metadata**: Show reading time, author info, or custom fields
-- **Search and filtering**: Add advanced search or category filtering
-- **Pagination**: Implement pagination for large page lists
-- **SEO**: Add custom meta tags, Open Graph, or structured data
-
-### 7. Supported Content Types
-
-The template supports all major Notion block types:
-
-- ✅ Paragraphs and text
-- ✅ Headings (H1, H2, H3)
-- ✅ Lists (bulleted, numbered, to-do)
-- ✅ Code blocks with syntax highlighting
-- ✅ Quotes and callouts
-- ✅ Images and embeds
-- ✅ Tables
-- ✅ Dividers
-- ✅ Toggle blocks
-- ✅ Column layouts
-
 
 ## 🤝 Contributing
 
