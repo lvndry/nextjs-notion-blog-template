@@ -1,10 +1,10 @@
 'use client';
 
-import type { NotionBlock } from "../../../lib/notion-types";
+import type { NotionBlockWithChildren } from "@/lib/notion";
 import { RichText } from "../RichText";
 
-export function ToDoBlock({ block }: { block: NotionBlock }) {
-  const todoItem = (block as Extract<NotionBlock, { type: "to_do" }>).to_do;
+export function ToDoBlock({ block }: { block: NotionBlockWithChildren }) {
+  const todoItem = (block as Extract<NotionBlockWithChildren, { type: "to_do" }>).to_do;
 
   return (
     <div className="flex items-start gap-3 text-gray-800 dark:text-gray-200 mb-3">

@@ -1,6 +1,5 @@
 import { ImageResponse } from "next/og";
 
-// Image metadata
 export const alt = "Next.js + Notion Blog Template"
 export const size = {
   width: 1200,

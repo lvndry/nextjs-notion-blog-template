@@ -1,6 +1,7 @@
 import NotionPageViewer from "@/components/NotionPageViewer";
-import { getPageContent, getPageDetails, searchAllPages } from "@/lib/notion";
+import { getPageContent, getPageDetails, searchAllPages, type NotionPageDetails } from "@/lib/notion";
 import { isValidUUID, normalizeUUID } from "@/lib/uuid";
+import type { TitlePropertyItemObjectResponse } from "@notionhq/client";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -10,36 +11,6 @@ interface PageProps {
     pageId: string;
   }>;
 }
-
-interface NotionPageDetails {
-  id: string;
-  url: string;
-  cover?: NotionCover | null;
-  icon?: NotionIcon | null;
-  properties: Record<string, unknown>;
-}
-
-interface NotionCover {
-  type: "file" | "external";
-  file?: {
-    url: string;
-  };
-  external?: {
-    url: string;
-  };
-}
-
-interface NotionIcon {
-  type: "emoji" | "file" | "external";
-  emoji?: string;
-  file?: {
-    url: string;
-  };
-  external?: {
-    url: string;
-  };
-}
-
 
 async function fetchPageData(pageId: string) {
   try {
@@ -75,10 +46,11 @@ export default async function NotionPage({ params }: PageProps) {
   }
 
   const { pageDetails, pageContent } = pageData;
-  const title = extractPageTitle(pageDetails as Record<string, unknown>);
-  const coverUrl = extractCoverUrl(pageDetails as NotionPageDetails);
-  const icon = extractPageIcon(pageDetails as NotionPageDetails);
-  const notionUrl = extractPageUrl(pageDetails as NotionPageDetails);
+
+  const title = extractPageTitle(pageDetails);
+  const coverUrl = extractCoverUrl(pageDetails);
+  const icon = extractPageIcon(pageDetails);
+  const notionUrl = extractPageUrl(pageDetails);
 
   return (
     <>
@@ -162,8 +134,8 @@ export async function generateMetadata({ params }: PageProps) {
     const normalizedPageId = normalizeUUID(resolvedParams.pageId);
     const pageDetails = await getPageDetails(normalizedPageId);
     const title = extractPageTitle(pageDetails);
-    const coverUrl = extractCoverUrl(pageDetails as NotionPageDetails);
-    const notionUrl = extractPageUrl(pageDetails as NotionPageDetails);
+    const coverUrl = extractCoverUrl(pageDetails);
+    const notionUrl = extractPageUrl(pageDetails);
 
     // Create a description from the title or use a default
     const description = `Read "${title}" - A Notion-powered blog post with rich content and modern design.`;
@@ -251,20 +223,27 @@ export const revalidate = 3600;
 export const dynamic = 'force-static';
 
 // Helper function to extract page title
-function extractPageTitle(pageDetails: Record<string, unknown>): string {
-  const properties = pageDetails.properties as Record<string, unknown>;
+function extractPageTitle(pageDetails: NotionPageDetails): string {
+  const properties = pageDetails.properties;
+
+  if (!properties) {
+    return `Untitled Page (${pageDetails.id.slice(0, 8)})`;
+  }
 
   for (const [, value] of Object.entries(properties)) {
     if (value && typeof value === "object" && "type" in value) {
-      const prop = value as { type: string; title?: Array<{ plain_text: string }> };
-      if (prop.type === "title" && prop.title && prop.title.length > 0) {
-        return prop.title.map((t) => t.plain_text).join('');
+      const prop = value as { type: string };
+      if (prop.type === "title") {
+        const titleProp = value as unknown as TitlePropertyItemObjectResponse;
+        if (titleProp.title && Array.isArray(titleProp.title) && titleProp.title.length > 0) {
+          return titleProp.title.map(t => t.plain_text || '').join('');
+        }
       }
     }
   }
 
   // Fallback to page ID if no title found
-  return `Untitled Page (${(pageDetails.id as string).slice(0, 8)})`;
+  return `Untitled Page (${pageDetails.id.slice(0, 8)})`;
 }
 
 function extractCoverUrl(pageDetails: NotionPageDetails): string | null {

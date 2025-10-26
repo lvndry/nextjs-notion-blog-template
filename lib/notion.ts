@@ -1,5 +1,11 @@
-import { Client } from "@notionhq/client";
-import type { NotionBlock, NotionPageParentInfo, NotionPageProperties } from "./notion-types";
+import { BlockObjectResponse, Client, PageObjectResponse } from "@notionhq/client";
+
+export type NotionPageDetails = Pick<PageObjectResponse, 'id' | 'url' | 'cover' | 'icon' | 'properties' | 'created_time' | 'last_edited_time'>;
+
+// Extended block type that includes children for our use case
+export type NotionBlockWithChildren = BlockObjectResponse & {
+  children?: NotionBlockWithChildren[];
+};
 
 export const notion = new Client({
   auth: process.env.NOTION_TOKEN,
@@ -11,8 +17,8 @@ export interface NotionPage {
   url: string;
   created_time: string;
   last_edited_time: string;
-  properties: NotionPageProperties;
-  parent: NotionPageParentInfo;
+  properties: PageObjectResponse["properties"];
+  parent: PageObjectResponse["parent"];
 }
 
 interface NotionPageResponse {
@@ -20,15 +26,8 @@ interface NotionPageResponse {
   url: string;
   created_time: string;
   last_edited_time: string;
-  properties: NotionPageProperties;
-  parent: NotionPageParentInfo;
-}
-
-interface NotionBlockResponse {
-  id: string;
-  type: string;
-  has_children: boolean;
-  [key: string]: unknown;
+  properties: PageObjectResponse["properties"];
+  parent: PageObjectResponse["parent"];
 }
 
 // Search for all pages accessible to the integration
@@ -84,18 +83,18 @@ function extractPageTitle(page: NotionPageResponse): string {
 
 // Get page content (blocks) for a specific page
 // Recursively fetch children for a block
-async function fetchChildrenRecursively(blockId: string): Promise<NotionBlock[]> {
+async function fetchChildrenRecursively(blockId: string): Promise<NotionBlockWithChildren[]> {
   const response = await notion.blocks.children.list({
     block_id: blockId,
     page_size: 100
   });
 
-  const children = response.results as NotionBlockResponse[];
+  const children = response.results as BlockObjectResponse[];
 
-  const withNested: NotionBlock[] = [];
+  const withNested: NotionBlockWithChildren[] = [];
 
   for (const child of children) {
-    const childBlock: NotionBlock = { ...(child as NotionBlockResponse) } as NotionBlock;
+    const childBlock: NotionBlockWithChildren = { ...(child as BlockObjectResponse) } as NotionBlockWithChildren;
     if (child.has_children) {
       childBlock.children = await fetchChildrenRecursively(child.id);
     }
@@ -106,18 +105,18 @@ async function fetchChildrenRecursively(blockId: string): Promise<NotionBlock[]>
   return withNested;
 }
 
-export async function getPageContent(pageId: string): Promise<NotionBlock[]> {
+export async function getPageContent(pageId: string): Promise<NotionBlockWithChildren[]> {
   try {
     const response = await notion.blocks.children.list({
       block_id: pageId,
       page_size: 100
     });
 
-    const topLevelBlocks = response.results as NotionBlockResponse[];
+    const topLevelBlocks = response.results as BlockObjectResponse[];
 
-    const withChildren: NotionBlock[] = [];
+    const withChildren: NotionBlockWithChildren[] = [];
     for (const block of topLevelBlocks) {
-      const topBlock: NotionBlock = { ...(block as NotionBlockResponse) } as NotionBlock;
+      const topBlock: NotionBlockWithChildren = { ...(block as BlockObjectResponse) } as NotionBlockWithChildren;
       if (block.has_children) {
         topBlock.children = await fetchChildrenRecursively(block.id);
       }
@@ -132,10 +131,26 @@ export async function getPageContent(pageId: string): Promise<NotionBlock[]> {
 }
 
 // Get detailed page information
-export async function getPageDetails(pageId: string) {
+export async function getPageDetails(pageId: string): Promise<NotionPageDetails> {
   try {
     const page = await notion.pages.retrieve({ page_id: pageId });
-    return page;
+
+    // Type guard to ensure we have a full page response
+    if ('url' in page && 'properties' in page) {
+
+      const fullPage = page as PageObjectResponse;
+      return {
+        id: fullPage.id,
+        url: fullPage.url,
+        cover: fullPage.cover,
+        icon: fullPage.icon,
+        properties: fullPage.properties,
+        created_time: fullPage.created_time,
+        last_edited_time: fullPage.last_edited_time
+      };
+    } else {
+      throw new Error('Page not found or access denied');
+    }
   } catch (error) {
     console.error(`${error} Error fetching page details:`);
     throw new Error(`${error} Failed to fetch page details`);

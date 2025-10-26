@@ -1,33 +1,37 @@
  'use client';
 
+import { formatDate } from "@/lib/date";
+import type { NotionBlockWithChildren, NotionPageDetails } from "@/lib/notion";
+import type { TitlePropertyItemObjectResponse } from "@notionhq/client";
 import { useState } from "react";
-import { formatDate } from "../lib/date";
-import type { NotionBlock } from "../lib/notion-types";
 import { NotionBlocks } from "./notion/NotionBlocks";
 
 interface NotionPageViewerProps {
-  pageDetails: Record<string, unknown>;
-  pageContent: NotionBlock[];
+  pageDetails: NotionPageDetails;
+  pageContent: NotionBlockWithChildren[];
 }
 
 export default function NotionPageViewer({ pageDetails, pageContent }: NotionPageViewerProps) {
   const [showRawData, setShowRawData] = useState(false);
 
-  function extractPageTitle (pageDetails: Record<string, unknown>): string {
-    const properties = pageDetails.properties as Record<string, unknown>;
+  function extractPageTitle (pageDetails: NotionPageDetails): string {
+    const properties = pageDetails.properties;
 
     // Look for title property
     for (const [, value] of Object.entries(properties)) {
       if (value && typeof value === "object" && "type" in value) {
-        const prop = value as { type: string; title?: Array<{ plain_text: string }> };
-        if (prop.type === 'title' && prop.title && prop.title.length > 0) {
-          return prop.title.map((t) => t.plain_text).join('');
+        const prop = value as { type: string };
+        if (prop.type === 'title') {
+          const titleProp = value as unknown as TitlePropertyItemObjectResponse;
+          if (titleProp.title && Array.isArray(titleProp.title) && titleProp.title.length > 0) {
+            return titleProp.title.map(t => t.plain_text || '').join('');
+          }
         }
       }
     }
 
     // Fallback to page ID if no title found
-    return `Untitled Page (${(pageDetails.id as string).slice(0, 8)})`;
+    return `Untitled Page (${pageDetails.id.slice(0, 8)})`;
   };
 
   const pageTitle = extractPageTitle(pageDetails);

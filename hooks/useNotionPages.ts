@@ -1,5 +1,5 @@
+import { fetchNotionPages, type NotionPage } from "@/lib/notion-client";
 import { cache, useCallback, useEffect, useState } from "react";
-import { fetchNotionPages, type NotionPage } from "../lib/notion-client";
 
 interface UseNotionPagesReturn {
   pages: NotionPage[];

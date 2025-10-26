@@ -1,6 +1,6 @@
 'use client';
 
-import type { NotionBlock } from "../../lib/notion-types";
+import type { NotionBlockWithChildren } from "@/lib/notion";
 import { CalloutBlock } from "./blocks/CalloutBlock";
 import { ChildPageBlock } from "./blocks/ChildPageBlock";
 import { CodeBlock } from "./blocks/CodeBlock";
@@ -15,7 +15,7 @@ import { TableOfContentsBlock } from "./blocks/TableOfContentsBlock";
 import { ToDoBlock } from "./blocks/ToDoBlock";
 import { ToggleBlock } from "./blocks/ToggleBlock";
 
-export function BlockRenderer({ block, allBlocks }: { block: NotionBlock; allBlocks?: NotionBlock[] }) {
+export function BlockRenderer({ block, allBlocks }: { block: NotionBlockWithChildren; allBlocks?: NotionBlockWithChildren[] }) {
   switch (block.type) {
     case "paragraph":
       return <ParagraphBlock block={block} />;

@@ -1,13 +1,13 @@
 'use client';
 
+import type { NotionBlockWithChildren } from "@/lib/notion";
 import { useState } from "react";
-import type { NotionBlock } from "../../../lib/notion-types";
 import { BlockRenderer } from "../BlockRenderer";
 import { RichText } from "../RichText";
 
-export function ToggleBlock({ block }: { block: NotionBlock }) {
+export function ToggleBlock({ block }: { block: NotionBlockWithChildren }) {
   const [isOpen, setIsOpen] = useState(false);
-  const toggle = (block as Extract<NotionBlock, { type: "toggle" }>).toggle;
+  const toggle = (block as Extract<NotionBlockWithChildren, { type: "toggle" }>).toggle;
   const children = block.children || [];
 
   return (

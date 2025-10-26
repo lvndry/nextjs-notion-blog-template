@@ -1,10 +1,10 @@
 'use client';
 
-  import type { NotionBlock } from "../../../lib/notion-types";
+import type { NotionBlockWithChildren } from "@/lib/notion";
 import { RichText } from "../RichText";
 
-export function TableBlock({ block }: { block: NotionBlock }) {
-  const { table, children } = block as Extract<NotionBlock, { type: "table" }>;
+export function TableBlock({ block }: { block: NotionBlockWithChildren }) {
+  const { table, children } = block as Extract<NotionBlockWithChildren, { type: "table" }>;
 
   const rows = children || [];
 
@@ -12,7 +12,7 @@ export function TableBlock({ block }: { block: NotionBlock }) {
   const isHeader = Boolean(table?.has_column_header);
 
   function renderRowCells(row: Record<string, unknown>, asHeader = false) {
-    const cells = (row as Extract<NotionBlock, { type: "table_row" }>).table_row?.cells || [];
+    const cells = (row as Extract<NotionBlockWithChildren, { type: "table_row" }>).table_row?.cells || [];
     const CellTag = asHeader ? 'th' : 'td';
 
     return cells.map((cell, idx) => (

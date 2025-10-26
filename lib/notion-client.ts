@@ -1,4 +1,4 @@
-import type { NotionPageParentInfo, NotionPageProperties } from "./notion-types";
+import type { PageObjectResponse } from "@notionhq/client";
 
 export interface NotionPage {
   id: string;
@@ -6,8 +6,8 @@ export interface NotionPage {
   url: string;
   created_time: string;
   last_edited_time: string;
-  properties: NotionPageProperties;
-  parent: NotionPageParentInfo;
+  properties: PageObjectResponse["properties"];
+  parent: PageObjectResponse["parent"];
 }
 
 export interface NotionPagesResponse {

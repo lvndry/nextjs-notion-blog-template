@@ -1,7 +1,7 @@
 'use client';
 
+import type { NotionBlockWithChildren } from "@/lib/notion";
 import { useMemo } from "react";
-import type { NotionBlock } from "../../../lib/notion-types";
 
 interface TocItem {
   id: string;
@@ -15,19 +15,19 @@ function extractTextFromRichText(richText?: Array<{ plain_text?: string }>): str
   return richText.map(item => item.plain_text || "").join("");
 }
 
-function extractHeadingsFromBlocks(blocks: NotionBlock[]): TocItem[] {
+function extractHeadingsFromBlocks(blocks: NotionBlockWithChildren[]): TocItem[] {
   const headings: TocItem[] = [];
 
-  function processBlock(block: NotionBlock) {
+  function processBlock(block: NotionBlockWithChildren) {
     if (block.type === "heading_1" || block.type === "heading_2" || block.type === "heading_3") {
       let headingData: { rich_text?: Array<{ plain_text?: string }> } | undefined;
 
       if (block.type === "heading_1") {
-        headingData = (block as Extract<NotionBlock, { type: "heading_1" }>).heading_1;
+        headingData = (block as Extract<NotionBlockWithChildren, { type: "heading_1" }>).heading_1;
       } else if (block.type === "heading_2") {
-        headingData = (block as Extract<NotionBlock, { type: "heading_2" }>).heading_2;
+        headingData = (block as Extract<NotionBlockWithChildren, { type: "heading_2" }>).heading_2;
       } else if (block.type === "heading_3") {
-        headingData = (block as Extract<NotionBlock, { type: "heading_3" }>).heading_3;
+        headingData = (block as Extract<NotionBlockWithChildren, { type: "heading_3" }>).heading_3;
       }
 
       const text = extractTextFromRichText(headingData?.rich_text);
@@ -56,7 +56,7 @@ function extractHeadingsFromBlocks(blocks: NotionBlock[]): TocItem[] {
   return headings;
 }
 
-export function TableOfContentsBlock({ allBlocks }: { block: NotionBlock; allBlocks?: NotionBlock[] }) {
+export function TableOfContentsBlock({ allBlocks }: { block: NotionBlockWithChildren; allBlocks?: NotionBlockWithChildren[] }) {
   const tocItems = useMemo(() => {
     if (!allBlocks) return [];
     return extractHeadingsFromBlocks(allBlocks);

@@ -1,16 +1,16 @@
 'use client';
 
+import { formatDate } from "@/lib/date";
+import type { NotionPage } from "@/lib/notion-client";
+import type { TitlePropertyItemObjectResponse } from "@notionhq/client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { formatDate } from "../lib/date";
-import type { NotionPage } from "../lib/notion-client";
-import type { NotionPageParent, NotionPageParentInfo, NotionTitleProperty } from "../lib/notion-types";
 
 type NotionPageDetails = {
-  properties?: Record<string, NotionTitleProperty | { type: string }>;
+  properties?: Record<string, TitlePropertyItemObjectResponse | { type: string }>;
 };
 
-function isPageParent(parent: NotionPageParentInfo): parent is NotionPageParent {
+function isPageParent(parent: NotionPage["parent"]): parent is { type: "page_id"; page_id: string } {
   return parent.type === "page_id";
 }
 
@@ -41,7 +41,7 @@ export default function NotionPageCard({ page }: NotionPageCardProps) {
         if (properties) {
           for (const [, value] of Object.entries(properties)) {
             if (value.type === "title") {
-              const titleArr = (value as NotionTitleProperty).title;
+              const titleArr = (value as TitlePropertyItemObjectResponse).title;
               if (Array.isArray(titleArr) && titleArr.length > 0) {
                 title = titleArr.map(t => t?.plain_text ?? '').join('');
                 break;

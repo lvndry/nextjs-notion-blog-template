@@ -1,10 +1,10 @@
 'use client';
 
-import type { NotionBlock } from "../../../lib/notion-types";
+import type { NotionBlockWithChildren } from "@/lib/notion";
 import { RichText } from "../RichText";
 
-export function CodeBlock({ block }: { block: NotionBlock }) {
-  const code = (block as Extract<NotionBlock, { type: "code" }>).code;
+export function CodeBlock({ block }: { block: NotionBlockWithChildren }) {
+  const code = (block as Extract<NotionBlockWithChildren, { type: "code" }>).code;
 
   return (
     <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-3 sm:p-4 mb-4 overflow-x-auto">

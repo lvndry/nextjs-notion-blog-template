@@ -1,8 +1,8 @@
  'use client';
 
-import type { NotionRichText } from "../../lib/notion-types";
+import type { RichTextItemResponse } from "@notionhq/client";
 
-export function RichText({ items }: { items?: NotionRichText[] }) {
+export function RichText({ items }: { items?: RichTextItemResponse[] }) {
   if (!items || items.length === 0) return null;
 
   return (
