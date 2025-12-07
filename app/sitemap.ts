@@ -2,7 +2,7 @@ import { searchAllPages } from "@/lib/notion";
 import { MetadataRoute } from "next";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nextjs-notion-blog-template-eight.vercel.app"
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nextjs-notion-blog-template-eight.vercel.app";
 
   // Static pages
   const staticPages: MetadataRoute.Sitemap = [

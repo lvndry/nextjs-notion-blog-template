@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { formatDate } from "@/lib/date";
 import type { NotionPage } from "@/lib/notion-client";

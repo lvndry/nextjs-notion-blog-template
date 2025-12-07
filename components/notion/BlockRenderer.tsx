@@ -1,6 +1,5 @@
-'use client';
-
 import type { NotionBlockWithChildren } from "@/lib/notion";
+import dynamic from "next/dynamic";
 import { CalloutBlock } from "./blocks/CalloutBlock";
 import { ChildPageBlock } from "./blocks/ChildPageBlock";
 import { CodeBlock } from "./blocks/CodeBlock";
@@ -11,9 +10,13 @@ import { ImageBlock } from "./blocks/ImageBlock";
 import { ParagraphBlock } from "./blocks/ParagraphBlock";
 import { QuoteBlock } from "./blocks/QuoteBlock";
 import { TableBlock } from "./blocks/TableBlock";
-import { TableOfContentsBlock } from "./blocks/TableOfContentsBlock";
 import { ToDoBlock } from "./blocks/ToDoBlock";
-import { ToggleBlock } from "./blocks/ToggleBlock";
+
+const ToggleBlock = dynamic(() => import("./blocks/ToggleBlock").then((mod) => ({ default: mod.ToggleBlock })), {
+  ssr: false,
+});
+
+const TableOfContentsBlock = dynamic(() => import("./blocks/TableOfContentsBlock").then((mod) => ({ default: mod.TableOfContentsBlock })));
 
 export function BlockRenderer({ block, allBlocks }: { block: NotionBlockWithChildren; allBlocks?: NotionBlockWithChildren[] }) {
   switch (block.type) {
@@ -46,7 +49,7 @@ export function BlockRenderer({ block, allBlocks }: { block: NotionBlockWithChil
     case "toggle":
       return <ToggleBlock block={block} />;
     case "table_of_contents":
-      return <TableOfContentsBlock block={block} allBlocks={allBlocks ?? []} />;
+      return <TableOfContentsBlock allBlocks={allBlocks ?? []} />;
     default:
       return (
         <div className="text-sm text-gray-500 dark:text-gray-400 italic mb-4 p-3 bg-gray-100 dark:bg-gray-800 rounded">

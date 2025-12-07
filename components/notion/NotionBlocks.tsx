@@ -1,5 +1,3 @@
- 'use client';
-
 import type { NotionBlockWithChildren } from "@/lib/notion";
 import { BlockRenderer } from "./BlockRenderer";
 import { RichText } from "./RichText";
@@ -25,14 +23,21 @@ export function NotionBlocks({ blocks }: { blocks: NotionBlockWithChildren[] }) 
 
   while (blockIndex < blocks.length) {
     const block = blocks[blockIndex];
-    if (!block) continue;
+    if (!block) {
+      blockIndex++;
+      continue;
+    }
 
     if (block.type === "bulleted_list_item") {
       const listItems: React.ReactElement[] = [];
       let currentIndex = blockIndex;
-      const currentBlock = blocks[currentIndex];
 
-      while (currentIndex < blocks.length && currentBlock?.type === "bulleted_list_item") {
+      while (currentIndex < blocks.length && blocks[currentIndex]?.type === "bulleted_list_item") {
+        const currentBlock = blocks[currentIndex];
+        if (!currentBlock || currentBlock.type !== "bulleted_list_item") {
+          currentIndex++;
+          continue;
+        }
         const bulletedItem = currentBlock.bulleted_list_item;
         const childrenBlocks = currentBlock.children ?? [];
         const listItem = (

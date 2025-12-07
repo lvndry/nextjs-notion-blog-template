@@ -1,5 +1,3 @@
-'use client';
-
 import type { NotionBlockWithChildren } from "@/lib/notion";
 import Link from "next/link";
 

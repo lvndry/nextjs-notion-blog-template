@@ -1,5 +1,3 @@
- 'use client';
-
 import type { RichTextItemResponse } from "@notionhq/client";
 
 export function RichText({ items }: { items?: RichTextItemResponse[] }) {

@@ -84,8 +84,6 @@ export async function getChildrenPages(pageId: string): Promise<NotionPage[]> {
       page_size: 100
     });
 
-    console.log("children response.results", response.results)
-
     // Filter only child_page blocks and ensure they are full BlockObjectResponses
     const childValues = response.results.filter(
       (block): block is BlockObjectResponse & { type: 'child_page' } =>
@@ -97,7 +95,7 @@ export async function getChildrenPages(pageId: string): Promise<NotionPage[]> {
         const page = await notion.pages.retrieve({ page_id: child.id });
 
         // Type guard to ensure full page response
-        if (!("url" in page)) return [];
+        if (!("url" in page)) return null;
 
         return {
           id: prepareUUID(page.id),
@@ -119,7 +117,6 @@ export async function getChildrenPages(pageId: string): Promise<NotionPage[]> {
     return [];
   }
 }
-
 
 // Extract page title from properties
 function extractPageTitle(page: NotionPageResponse): string {

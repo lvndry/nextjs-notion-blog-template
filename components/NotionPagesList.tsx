@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useNotionPages } from "@/hooks/useNotionPages";
 import { useState } from "react";

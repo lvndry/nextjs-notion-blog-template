@@ -1,5 +1,3 @@
-'use client';
-
 import type { NotionBlockWithChildren } from "@/lib/notion";
 import { RichText } from "../RichText";
 

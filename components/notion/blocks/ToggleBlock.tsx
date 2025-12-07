@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import type { NotionBlockWithChildren } from "@/lib/notion";
 import { useState } from "react";

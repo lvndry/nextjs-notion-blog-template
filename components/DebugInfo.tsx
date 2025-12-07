@@ -1,5 +1,3 @@
-'use client';
-
 interface DebugInfoProps {
   data: unknown;
   label: string;

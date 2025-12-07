@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import type { NotionBlockWithChildren } from "@/lib/notion";
 import { useMemo } from "react";
@@ -56,7 +56,7 @@ function extractHeadingsFromBlocks(blocks: NotionBlockWithChildren[]): TocItem[]
   return headings;
 }
 
-export function TableOfContentsBlock({ allBlocks }: { block: NotionBlockWithChildren; allBlocks?: NotionBlockWithChildren[] }) {
+export function TableOfContentsBlock({ allBlocks }: { allBlocks?: NotionBlockWithChildren[] }) {
   const tocItems = useMemo(() => {
     if (!allBlocks) return [];
     return extractHeadingsFromBlocks(allBlocks);
