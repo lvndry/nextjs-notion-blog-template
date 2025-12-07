@@ -74,7 +74,7 @@ To allow your integration to access specific pages:
 ### 5. Run the Development Server
 
 ```bash
-bun dev
+bun run dev
 # or
 npm run dev
 # or
