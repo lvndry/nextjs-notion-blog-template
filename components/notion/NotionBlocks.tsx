@@ -41,15 +41,15 @@ export function NotionBlocks({ blocks }: { blocks: NotionBlockWithChildren[] }) 
         const bulletedItem = currentBlock.bulleted_list_item;
         const childrenBlocks = currentBlock.children ?? [];
         const listItem = (
-          <li key={(currentBlock.id ?? currentIndex)} className="text-gray-800 dark:text-gray-200 mb-2">
+          <li key={(currentBlock.id ?? currentIndex)} className="text-sm sm:text-base text-gray-800 dark:text-gray-200 mb-2 sm:mb-2.5">
             <div className="flex items-start">
-              <span className="mr-2 text-gray-500 dark:text-gray-400">•</span>
-              <span>
+              <span className="mr-2 sm:mr-3 text-gray-500 dark:text-gray-400 flex-shrink-0">•</span>
+              <span className="min-w-0 flex-1">
                 <RichText items={bulletedItem?.rich_text} />
               </span>
             </div>
             {childrenBlocks.length > 0 && (
-              <div className="pl-6 mt-1">
+              <div className="pl-4 sm:pl-6 mt-1 sm:mt-1.5">
                 <NotionBlocks blocks={childrenBlocks} />
               </div>
             )}
@@ -61,7 +61,7 @@ export function NotionBlocks({ blocks }: { blocks: NotionBlockWithChildren[] }) 
       }
 
       elements.push(
-        <ul key={`bulleted-${blockIndex}`} className="list-none pl-4 mb-4 space-y-1">
+        <ul key={`bulleted-${blockIndex}`} className="list-none pl-3 sm:pl-4 mb-3 sm:mb-4 space-y-1 sm:space-y-1.5">
           {listItems}
         </ul>
       );
@@ -87,15 +87,15 @@ export function NotionBlocks({ blocks }: { blocks: NotionBlockWithChildren[] }) 
         const marker = getListMarker(itemNumber, listType);
 
         const listItem = (
-          <li key={(currentBlock.id ?? currentIndex)} className="text-gray-800 dark:text-gray-200 mb-2">
+          <li key={(currentBlock.id ?? currentIndex)} className="text-sm sm:text-base text-gray-800 dark:text-gray-200 mb-2 sm:mb-2.5">
             <div className="flex items-start">
-              <span className="mr-2 text-gray-500 dark:text-gray-400">{marker}.</span>
-              <span>
+              <span className="mr-2 sm:mr-3 text-gray-500 dark:text-gray-400 flex-shrink-0">{marker}.</span>
+              <span className="min-w-0 flex-1">
                 <RichText items={numberedItem?.rich_text} />
               </span>
             </div>
             {childrenBlocks.length > 0 && (
-              <div className="pl-6 mt-1">
+              <div className="pl-4 sm:pl-6 mt-1 sm:mt-1.5">
                 <NotionBlocks blocks={childrenBlocks} />
               </div>
             )}
@@ -108,7 +108,7 @@ export function NotionBlocks({ blocks }: { blocks: NotionBlockWithChildren[] }) 
       }
 
       elements.push(
-        <ol key={`numbered-${blockIndex}`} className="list-none pl-4 mb-4 space-y-1">
+        <ol key={`numbered-${blockIndex}`} className="list-none pl-3 sm:pl-4 mb-3 sm:mb-4 space-y-1 sm:space-y-1.5">
           {listItems}
         </ol>
       );
@@ -125,5 +125,5 @@ export function NotionBlocks({ blocks }: { blocks: NotionBlockWithChildren[] }) 
     blockIndex++;
   }
 
-  return <div className="space-y-2">{elements}</div>;
+  return <div className="space-y-2 sm:space-y-3">{elements}</div>;
 }

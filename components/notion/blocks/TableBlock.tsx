@@ -14,15 +14,15 @@ export function TableBlock({ block }: { block: NotionBlockWithChildren }) {
     const CellTag = asHeader ? 'th' : 'td';
 
     return cells.map((cell, idx) => (
-      <CellTag key={idx} className={`border border-gray-200 dark:border-gray-700 p-2 align-top ${asHeader ? "bg-gray-50 dark:bg-gray-800 font-semibold" : ""}`}>
+      <CellTag key={idx} className={`border border-gray-200 dark:border-gray-700 p-2 sm:p-3 align-top text-xs sm:text-sm ${asHeader ? "bg-gray-50 dark:bg-gray-800 font-semibold" : ""}`}>
         <RichText items={cell} />
       </CellTag>
     ));
   }
 
   return (
-    <div className="my-4 overflow-x-auto">
-      <table className="w-full border-collapse text-gray-800 dark:text-gray-200">
+    <div className="my-4 sm:my-6 overflow-x-auto -mx-4 sm:mx-0 px-4 sm:px-0">
+      <table className="w-full border-collapse text-gray-800 dark:text-gray-200 min-w-[500px] sm:min-w-0">
         {isHeader && (
           <thead>
             <tr>

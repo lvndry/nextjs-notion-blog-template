@@ -8,13 +8,13 @@ export function ChildPageBlock({ block }: { block: NotionBlockWithChildren }) {
   const idNoDash = String(id || '').replace(/-/g, '');
 
   return (
-    <div className="mb-3">
-      <Link href={`/page/${idNoDash}`} className="inline-flex items-center gap-2 px-3 py-2 bg-gray-100 dark:bg-gray-800 rounded-md text-blue-600 dark:text-blue-400 hover:bg-gray-200 dark:hover:bg-gray-700">
-        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+    <div className="mb-3 sm:mb-4">
+      <Link href={`/page/${idNoDash}`} className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 bg-gray-100 dark:bg-gray-800 rounded-md text-blue-600 dark:text-blue-400 hover:bg-gray-200 dark:hover:bg-gray-700 text-sm sm:text-base min-h-[44px] transition-colors">
+        <svg className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 2h6l5 5v13a2 2 0 01-2 2H9a2 2 0 01-2-2V4a2 2 0 012-2z" />
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 2v6h6" />
         </svg>
-        <span>{title}</span>
+        <span className="min-w-0 truncate">{title}</span>
       </Link>
     </div>
   );

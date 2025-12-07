@@ -6,7 +6,7 @@ export function ParagraphBlock({ block }: { block: NotionBlockWithChildren }) {
   const items = paragraph?.rich_text;
 
   return (
-    <p className="text-gray-800 dark:text-gray-200 leading-relaxed mb-4">
+    <p className="text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed mb-3 sm:mb-4">
       <RichText items={items} />
     </p>
   );

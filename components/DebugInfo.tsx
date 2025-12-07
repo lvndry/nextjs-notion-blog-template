@@ -9,11 +9,11 @@ export default function DebugInfo({ data, label }: DebugInfoProps) {
   }
 
   return (
-    <div className="mt-4 p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
-      <h4 className="text-sm font-medium text-yellow-800 dark:text-yellow-200 mb-2">
+    <div className="mt-4 sm:mt-6 p-3 sm:p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
+      <h4 className="text-xs sm:text-sm font-medium text-yellow-800 dark:text-yellow-200 mb-2">
         Debug: {label}
       </h4>
-      <pre className="text-xs text-yellow-700 dark:text-yellow-300 overflow-x-auto">
+      <pre className="text-xs sm:text-sm text-yellow-700 dark:text-yellow-300 overflow-x-auto -mx-2 sm:mx-0 px-2 sm:px-0">
         {JSON.stringify(data, null, 2)}
       </pre>
     </div>

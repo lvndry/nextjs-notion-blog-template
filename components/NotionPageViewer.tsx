@@ -37,7 +37,7 @@ export default function NotionPageViewer({ pageDetails, pageContent }: NotionPag
   const lastEditedTime = pageDetails.last_edited_time;
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="max-w-4xl mx-auto px-4 sm:px-0">
       {/* Page Header */}
       <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 sm:p-6 mb-4 sm:mb-6 shadow-sm">
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4 mb-4">
@@ -76,25 +76,25 @@ export default function NotionPageViewer({ pageDetails, pageContent }: NotionPag
       {/* Page Content */}
       <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 sm:p-6 shadow-sm">
         {showRawData ? (
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Raw Page Data</h2>
-            <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
+            <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-3 sm:mb-4">Raw Page Data</h2>
+            <div className="space-y-4 sm:space-y-6">
               <div>
-                <h3 className="text-lg font-medium text-gray-800 dark:text-gray-200 mb-2">Page Details:</h3>
-                <pre className="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg overflow-x-auto text-sm">
+                <h3 className="text-base sm:text-lg font-medium text-gray-800 dark:text-gray-200 mb-2">Page Details:</h3>
+                <pre className="bg-gray-100 dark:bg-gray-700 p-3 sm:p-4 rounded-lg overflow-x-auto text-xs sm:text-sm -mx-2 sm:mx-0 px-2 sm:px-0">
                   {JSON.stringify(pageDetails, null, 2)}
                 </pre>
               </div>
               <div>
-                <h3 className="text-lg font-medium text-gray-800 dark:text-gray-200 mb-2">Page Content:</h3>
-                <pre className="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg overflow-x-auto text-sm">
+                <h3 className="text-base sm:text-lg font-medium text-gray-800 dark:text-gray-200 mb-2">Page Content:</h3>
+                <pre className="bg-gray-100 dark:bg-gray-700 p-3 sm:p-4 rounded-lg overflow-x-auto text-xs sm:text-sm -mx-2 sm:mx-0 px-2 sm:px-0">
                   {JSON.stringify(pageContent, null, 2)}
                 </pre>
               </div>
             </div>
           </div>
         ) : (
-          <div className="prose prose-gray dark:prose-invert max-w-none">
+          <div className="prose prose-sm sm:prose-base prose-gray dark:prose-invert max-w-none prose-headings:mt-6 prose-headings:mb-3 prose-p:mb-3 prose-ul:mb-3 prose-ol:mb-3">
             {pageContent.length === 0 ? (
               <div className="text-center py-12">
                 <div className="text-gray-400 dark:text-gray-500 mb-4">

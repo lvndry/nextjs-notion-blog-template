@@ -72,25 +72,25 @@ export function TableOfContentsBlock({ allBlocks }: { allBlocks?: NotionBlockWit
   function getIndentClass(level: number) {
     switch (level) {
       case 1: return "ml-0";
-      case 2: return 'ml-4';
-      case 3: return 'ml-8';
-      case 4: return "ml-12";
-      case 5: return "ml-16";
-      case 6: return "ml-20";
+      case 2: return 'ml-3 sm:ml-4';
+      case 3: return 'ml-6 sm:ml-8';
+      case 4: return "ml-9 sm:ml-12";
+      case 5: return "ml-12 sm:ml-16";
+      case 6: return "ml-15 sm:ml-20";
       default: return "ml-0";
     }
   };
 
   if (tocItems.length === 0) {
     return (
-      <div className="mb-6 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+      <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
         <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
           </svg>
-          <span className="text-sm font-medium">Table of Contents</span>
+          <span className="text-xs sm:text-sm font-medium">Table of Contents</span>
         </div>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+        <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-2">
           No headings found in this page.
         </p>
       </div>
@@ -98,20 +98,20 @@ export function TableOfContentsBlock({ allBlocks }: { allBlocks?: NotionBlockWit
   }
 
   return (
-    <div className="mb-6 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
-      <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300 mb-3">
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+      <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300 mb-2 sm:mb-3">
+        <svg className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
         </svg>
-        <span className="text-sm font-medium">Table of Contents</span>
+        <span className="text-xs sm:text-sm font-medium">Table of Contents</span>
       </div>
 
-      <nav className="space-y-1">
+      <nav className="space-y-1 sm:space-y-1.5">
         {tocItems.map((item) => (
           <button
             key={item.id}
             onClick={() => scrollToHeading(item.elementId)}
-            className={`block w-full text-left text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded px-2 py-1 transition-colors ${getIndentClass(item.level)}`}
+            className={`block w-full text-left text-xs sm:text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded px-2 sm:px-3 py-1.5 sm:py-2 transition-colors min-h-[44px] flex items-center ${getIndentClass(item.level)}`}
           >
             {item.text}
           </button>

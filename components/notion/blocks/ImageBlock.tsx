@@ -8,15 +8,16 @@ export function ImageBlock({ block }: { block: NotionBlockWithChildren }) {
   if (!src) return null;
 
   return (
-    <figure className="my-4">
+    <figure className="my-4 sm:my-6">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={src}
         alt="Notion image"
         className="w-full h-auto rounded-md border border-gray-200 dark:border-gray-700 max-w-full"
+        loading="lazy"
       />
       {!!(image?.caption && image.caption.length) && (
-        <figcaption className="mt-2 text-xs sm:text-sm text-gray-600 dark:text-gray-400"><RichText items={image?.caption} /></figcaption>
+        <figcaption className="mt-2 sm:mt-3 px-1 text-xs sm:text-sm text-gray-600 dark:text-gray-400 text-center"><RichText items={image?.caption} /></figcaption>
       )}
     </figure>
   );

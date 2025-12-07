@@ -15,7 +15,7 @@ export function Heading1Block({ block }: { block: NotionBlockWithChildren }) {
   const elementId = `heading-${text.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '')}`;
 
   return (
-    <h1 id={elementId} className="text-3xl font-bold text-gray-900 dark:text-white mb-6 mt-8 first:mt-0">
+    <h1 id={elementId} className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-4 sm:mb-6 mt-6 sm:mt-8 first:mt-0">
       <RichText items={items} />
     </h1>
   );
@@ -31,7 +31,7 @@ export function Heading2Block({ block }: { block: NotionBlockWithChildren }) {
   const elementId = `heading-${text.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '')}`;
 
   return (
-    <h2 id={elementId} className="text-2xl font-semibold text-gray-900 dark:text-white mb-4 mt-6">
+    <h2 id={elementId} className="text-xl sm:text-2xl font-semibold text-gray-900 dark:text-white mb-3 sm:mb-4 mt-4 sm:mt-6">
       <RichText items={items} />
     </h2>
   );
@@ -47,7 +47,7 @@ export function Heading3Block({ block }: { block: NotionBlockWithChildren }) {
   const elementId = `heading-${text.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '')}`;
 
   return (
-    <h3 id={elementId} className="text-xl font-semibold text-gray-900 dark:text-white mb-3 mt-5">
+    <h3 id={elementId} className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-2 sm:mb-3 mt-4 sm:mt-5">
       <RichText items={items} />
     </h3>
   );
