@@ -1,4 +1,5 @@
 import { BlockObjectResponse, Client, PageObjectResponse } from "@notionhq/client";
+import { prepareUUID } from "./uuid";
 
 export type NotionPageDetails = Pick<PageObjectResponse, "id" | "url" | "cover" | "icon" | "properties" | "created_time" | "last_edited_time">;
 
@@ -7,7 +8,7 @@ export type NotionBlockWithChildren = BlockObjectResponse & {
 };
 
 export const notion = new Client({
-  auth: process.env.NOTION_TOKEN,
+  auth: process.env.NOTION_TOKEN ?? "",
 });
 
 export interface NotionPage {
@@ -93,11 +94,13 @@ export async function getChildrenPages(pageId: string): Promise<NotionPage[]> {
 
     const pages = await Promise.all(
       childValues.map(async (child) => {
-        const page = await notion.pages.retrieve({ page_id: child.id }) as PageObjectResponse;
+        const page = await notion.pages.retrieve({ page_id: child.id });
 
+        // Type guard to ensure full page response
+        if (!("url" in page)) return [];
 
         return {
-          id: page.id,
+          id: prepareUUID(page.id),
           title: extractPageTitle(page),
           url: page.url,
           cover: page.cover,
@@ -222,18 +225,10 @@ export async function getPageDetails(pageId: string): Promise<NotionPageDetails>
 /**
  * Extract cover URL from page
  */
-export function extractCoverUrl(pageDetails: NotionPageDetails): string | null {
-  const { cover } = pageDetails;
-
+export function extractCoverUrl(page: { cover: PageObjectResponse["cover"] }): string | null {
+  const { cover } = page;
   if (!cover) return null;
-
-  if (cover.type === "file" && cover.file?.url) {
-    return cover.file.url;
-  }
-
-  if (cover.type === "external" && cover.external?.url) {
-    return cover.external.url;
-  }
-
+  if (cover.type === "file" && cover.file?.url) return cover.file.url;
+  if (cover.type === "external" && cover.external?.url) return cover.external.url;
   return null;
 }

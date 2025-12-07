@@ -32,11 +32,11 @@ git clone https://github.com/YOUR_USERNAME/nextjs-notion-blog-template.git
 cd nextjs-notion-blog-template
 
 # Install dependencies
+bun install
+# or
 npm install
 # or
-yarn install
-# or
-bun install
+pnpm install
 ```
 
 ### 2. Create Notion Integration
@@ -74,24 +74,14 @@ To allow your integration to access specific pages:
 ### 5. Run the Development Server
 
 ```bash
+bun dev
+# or
 npm run dev
 # or
-yarn dev
-# or
-bun dev
+pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) to see your blog!
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-1. Fork the project
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
 
 ## 📄 License
 
@@ -99,7 +89,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📖 Learn More
 
-- [Notion API Documentation](https://developers.notion.com/)
 - [Next.js Documentation](https://nextjs.org/docs)
-- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
+- [Notion API Documentation](https://developers.notion.com/)
 - [Notion API Working with Page Content](https://developers.notion.com/docs/working-with-page-content)

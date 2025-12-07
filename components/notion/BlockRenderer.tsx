@@ -46,7 +46,7 @@ export function BlockRenderer({ block, allBlocks }: { block: NotionBlockWithChil
     case "toggle":
       return <ToggleBlock block={block} />;
     case "table_of_contents":
-      return <TableOfContentsBlock block={block} allBlocks={allBlocks} />;
+      return <TableOfContentsBlock block={block} allBlocks={allBlocks ?? []} />;
     default:
       return (
         <div className="text-sm text-gray-500 dark:text-gray-400 italic mb-4 p-3 bg-gray-100 dark:bg-gray-800 rounded">

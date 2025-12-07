@@ -4,10 +4,10 @@ import { useNotionPages } from "@/hooks/useNotionPages";
 import { useState } from "react";
 import NotionPageCard from "./NotionPageCard";
 
-type NotionPagesListProps = {
+interface NotionPagesListProps {
   limit?: number;
   header?: boolean;
-};
+}
 
 export default function NotionPagesList({
   limit,

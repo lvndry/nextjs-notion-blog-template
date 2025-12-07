@@ -6,16 +6,16 @@ import type { TitlePropertyItemObjectResponse } from "@notionhq/client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-type NotionPageDetails = {
+interface NotionPageDetails {
   properties?: Record<string, TitlePropertyItemObjectResponse | { type: string }>;
-};
-
-function isPageParent(parent: NotionPage["parent"]): parent is { type: "page_id"; page_id: string } {
-  return parent.type === "page_id";
 }
 
 interface NotionPageCardProps {
   page: NotionPage;
+}
+
+function isPageParent(parent: NotionPage["parent"]): parent is { type: "page_id"; page_id: string } {
+  return parent.type === "page_id";
 }
 
 export default function NotionPageCard({ page }: NotionPageCardProps) {

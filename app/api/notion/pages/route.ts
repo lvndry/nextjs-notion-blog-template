@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
     const pageId = searchParams.get("pageId");
 
     switch (action) {
-      case "list":
+      case "list": {
         // Get all accessible pages
         const pages = await searchAllPages();
         return NextResponse.json({ pages }, {
@@ -23,8 +23,9 @@ export async function GET(request: NextRequest) {
             'Cache-Control': 's-maxage=3600, stale-while-revalidate',
           },
         });
+      }
 
-      case "content":
+      case "content": {
         // Get content for a specific page
         if (!pageId) {
           return NextResponse.json(
@@ -39,8 +40,9 @@ export async function GET(request: NextRequest) {
             'Cache-Control': 's-maxage=3600, stale-while-revalidate',
           },
         });
+      }
 
-      case "details":
+      case "details": {
         // Get detailed information for a specific page
         if (!pageId) {
           return NextResponse.json(
@@ -55,6 +57,7 @@ export async function GET(request: NextRequest) {
             'Cache-Control': 's-maxage=3600, stale-while-revalidate',
           },
         });
+      }
 
       default:
         return NextResponse.json(
