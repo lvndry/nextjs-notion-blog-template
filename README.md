@@ -83,10 +83,6 @@ pnpm dev
 
 Open [http://localhost:3000](http://localhost:3000) to see your blog!
 
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
 ## 📖 Learn More
 
 - [Next.js Documentation](https://nextjs.org/docs)
