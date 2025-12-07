@@ -28,7 +28,7 @@ export function TableBlock({ block }: { block: NotionBlockWithChildren }) {
         {isHeader && (
           <thead>
             <tr>
-              {renderRowCells(rows[0], true)}
+              {renderRowCells(rows[0] as Record<string, unknown>, true)}
             </tr>
           </thead>
         )}

@@ -25,16 +25,16 @@ export function NotionBlocks({ blocks }: { blocks: NotionBlockWithChildren[] }) 
 
   while (blockIndex < blocks.length) {
     const block = blocks[blockIndex];
+    if (!block) continue;
 
     if (block.type === "bulleted_list_item") {
       const listItems: React.ReactElement[] = [];
       let currentIndex = blockIndex;
+      const currentBlock = blocks[currentIndex];
 
-      while (currentIndex < blocks.length && (blocks[currentIndex]).type === "bulleted_list_item") {
-        const currentBlock = blocks[currentIndex] as Extract<NotionBlockWithChildren, { type: "bulleted_list_item" }>;
+      while (currentIndex < blocks.length && currentBlock?.type === "bulleted_list_item") {
         const bulletedItem = currentBlock.bulleted_list_item;
         const childrenBlocks = currentBlock.children ?? [];
-
         const listItem = (
           <li key={(currentBlock.id ?? currentIndex)} className="text-gray-800 dark:text-gray-200 mb-2">
             <div className="flex items-start">
@@ -74,7 +74,7 @@ export function NotionBlocks({ blocks }: { blocks: NotionBlockWithChildren[] }) 
       const useLetters = firstItemText.includes("letter") || firstItemText.includes("alphabet") || firstItemText.includes("a)") || firstItemText.includes("b)");
       const listType: "number" | "letter" = useLetters ? "letter" : "number";
 
-      while (currentIndex < blocks.length && blocks[currentIndex].type === "numbered_list_item") {
+      while (currentIndex < blocks.length && blocks[currentIndex]?.type === "numbered_list_item") {
         const currentBlock = blocks[currentIndex] as Extract<NotionBlockWithChildren, { type: "numbered_list_item" }>;
         const numberedItem = currentBlock.numbered_list_item;
         const childrenBlocks = currentBlock.children || [];
