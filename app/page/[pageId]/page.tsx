@@ -1,5 +1,5 @@
 import NotionPageViewer from "@/components/NotionPageViewer";
-import { getPageContent, getPageDetails, searchAllPages, type NotionPageDetails } from "@/lib/notion";
+import { extractCoverUrl, getPageContent, getPageDetails, searchAllPages, type NotionPageDetails } from "@/lib/notion";
 import { isValidUUID, normalizeUUID } from "@/lib/uuid";
 import Image from "next/image";
 import Link from "next/link";
@@ -243,21 +243,6 @@ function extractPageTitle(pageDetails: NotionPageDetails): string {
   return `Untitled Page (${pageDetails.id.slice(0, 8)})`;
 }
 
-function extractCoverUrl(pageDetails: NotionPageDetails): string | null {
-  const { cover } = pageDetails;
-
-  if (!cover) return null;
-
-  if (cover.type === "file" && cover.file?.url) {
-    return cover.file.url;
-  }
-
-  if (cover.type === "external" && cover.external?.url) {
-    return cover.external.url;
-  }
-
-  return null;
-}
 
 function extractPageUrl(details: NotionPageDetails): string | null {
   return details.url || null;

@@ -2,7 +2,6 @@ import { BlockObjectResponse, Client, PageObjectResponse } from "@notionhq/clien
 
 export type NotionPageDetails = Pick<PageObjectResponse, "id" | "url" | "cover" | "icon" | "properties" | "created_time" | "last_edited_time">;
 
-// Extended block type that includes children for our use case
 export type NotionBlockWithChildren = BlockObjectResponse & {
   children?: NotionBlockWithChildren[];
 };
@@ -15,6 +14,8 @@ export interface NotionPage {
   id: string;
   title: string;
   url: string;
+  cover: PageObjectResponse["cover"];
+  icon: PageObjectResponse["icon"];
   created_time: string;
   last_edited_time: string;
   properties: PageObjectResponse["properties"];
@@ -24,15 +25,20 @@ export interface NotionPage {
 interface NotionPageResponse {
   id: string;
   url: string;
+  cover: PageObjectResponse["cover"];
+  icon: PageObjectResponse["icon"];
   created_time: string;
   last_edited_time: string;
   properties: PageObjectResponse["properties"];
   parent: PageObjectResponse["parent"];
 }
 
-// Search for all pages accessible to the integration
+/**
+ * Search for all pages accessible to the integration
+ */
 export async function searchAllPages(): Promise<NotionPage[]> {
   try {
+    console.log("Fetching pages from Notion...");
     const response = await notion.search({
       filter: {
         property: "object",
@@ -41,17 +47,22 @@ export async function searchAllPages(): Promise<NotionPage[]> {
       page_size: 100
     });
 
+    console.log(`Notion search returned ${response.results.length} results.`);
+
     const pages: NotionPage[] = response.results.map((page) => {
       const urlFriendlyId = page.id.replace(/-/g, "");
+      const typedPage = page as unknown as NotionPageResponse;
 
       return {
         id: urlFriendlyId,
-        title: extractPageTitle(page as NotionPageResponse),
-        url: (page as NotionPageResponse).url,
-        created_time: (page as NotionPageResponse).created_time,
-        last_edited_time: (page as NotionPageResponse).last_edited_time,
-        properties: (page as NotionPageResponse).properties,
-        parent: (page as NotionPageResponse).parent
+        title: extractPageTitle(typedPage),
+        url: typedPage.url,
+        cover: typedPage.cover,
+        icon: typedPage.icon,
+        created_time: typedPage.created_time,
+        last_edited_time: typedPage.last_edited_time,
+        properties: typedPage.properties,
+        parent: typedPage.parent
       };
     });
 
@@ -61,6 +72,51 @@ export async function searchAllPages(): Promise<NotionPage[]> {
     throw new Error(`${error} Failed to fetch pages from Notion`);
   }
 }
+
+/**
+ * Fetch all child pages of a specific page
+ */
+export async function getChildrenPages(pageId: string): Promise<NotionPage[]> {
+  try {
+    const response = await notion.blocks.children.list({
+      block_id: pageId,
+      page_size: 100
+    });
+
+    console.log("children response.results", response.results)
+
+    // Filter only child_page blocks and ensure they are full BlockObjectResponses
+    const childValues = response.results.filter(
+      (block): block is BlockObjectResponse & { type: 'child_page' } =>
+      "type" in block && block.type === "child_page"
+    );
+
+    const pages = await Promise.all(
+      childValues.map(async (child) => {
+        const page = await notion.pages.retrieve({ page_id: child.id }) as PageObjectResponse;
+
+
+        return {
+          id: page.id,
+          title: extractPageTitle(page),
+          url: page.url,
+          cover: page.cover,
+          icon: page.icon,
+          created_time: page.created_time,
+          last_edited_time: page.last_edited_time,
+          properties: page.properties,
+          parent: page.parent
+        };
+      })
+    );
+
+    return pages.filter((p): p is NotionPage => p !== null);
+  } catch (error) {
+    console.error(`Error fetching children pages: ${error}`);
+    return [];
+  }
+}
+
 
 // Extract page title from properties
 function extractPageTitle(page: NotionPageResponse): string {
@@ -105,6 +161,10 @@ async function fetchChildrenRecursively(blockId: string): Promise<NotionBlockWit
   return withNested;
 }
 
+/**
+ * Get page content (blocks) for a specific page
+ * Recursively fetch children for a block
+ */
 export async function getPageContent(pageId: string): Promise<NotionBlockWithChildren[]> {
   try {
     const response = await notion.blocks.children.list({
@@ -130,7 +190,9 @@ export async function getPageContent(pageId: string): Promise<NotionBlockWithChi
   }
 }
 
-// Get detailed page information
+/**
+ * Get detailed page information
+ */
 export async function getPageDetails(pageId: string): Promise<NotionPageDetails> {
   try {
     const page = await notion.pages.retrieve({ page_id: pageId });
@@ -155,4 +217,23 @@ export async function getPageDetails(pageId: string): Promise<NotionPageDetails>
     console.error(`${error} Error fetching page details:`);
     throw new Error(`${error} Failed to fetch page details`);
   }
+}
+
+/**
+ * Extract cover URL from page
+ */
+export function extractCoverUrl(pageDetails: NotionPageDetails): string | null {
+  const { cover } = pageDetails;
+
+  if (!cover) return null;
+
+  if (cover.type === "file" && cover.file?.url) {
+    return cover.file.url;
+  }
+
+  if (cover.type === "external" && cover.external?.url) {
+    return cover.external.url;
+  }
+
+  return null;
 }
