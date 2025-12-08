@@ -32,6 +32,8 @@ export default function OpenGraphImage() {
           <img
             src={imageUrl}
             alt="Banner"
+            width={2882} // dimension of the image
+            height={972} // dimension of the image
             style={{
               width: "100%",
               height: "100%",
