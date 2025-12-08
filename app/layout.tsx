@@ -16,10 +16,21 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: {
     default: "Next.js + Notion Blog Template",
-    template: "%s | Notion Blog"
+    template: "%s | Notion Blog",
   },
-  description: "A modern, customizable Next.js boilerplate for creating a blog powered by Notion as a CMS. Perfect for developers who want to leverage Notion's powerful content management while maintaining full control over their blog's design and functionality.",
-  keywords: ["Next.js", "Notion", "Blog", "CMS", "React", "TypeScript", "Template", "SEO"],
+  description:
+    "A modern, customizable Next.js boilerplate for creating a blog powered by Notion as a CMS. Perfect for developers who want to leverage Notion's powerful content management while maintaining full control over their blog's design and functionality.",
+  keywords: [
+    "Next.js",
+    "Notion",
+    "Blog",
+    "CMS",
+    "React",
+    "TypeScript",
+    "Template",
+    "SEO",
+    "Newsletter",
+  ],
   authors: [{ name: "Notion Blog Template" }],
   creator: "Notion Blog Template",
   publisher: "Notion Blog Template",
@@ -28,7 +39,10 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://nextjs-notion-blog-template-eight.vercel.app"),
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL ||
+      "https://nextjs-notion-blog-template-eight.vercel.app"
+  ),
   alternates: {
     canonical: "/",
   },
@@ -37,7 +51,8 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "/",
     title: "Next.js + Notion Blog Template",
-    description: "A modern, customizable Next.js boilerplate for creating a blog powered by Notion as a CMS. Perfect for developers who want to leverage Notion's powerful content management while maintaining full control over their blog's design and functionality.",
+    description:
+      "A modern, customizable Next.js boilerplate for creating a blog powered by Notion as a CMS. Perfect for developers who want to leverage Notion's powerful content management while maintaining full control over their blog's design and functionality.",
     siteName: "Notion Blog Template",
     images: [
       {
@@ -51,7 +66,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Next.js + Notion Blog Template",
-    description: "A modern, customizable Next.js boilerplate for creating a blog powered by Notion as a CMS.",
+    description:
+      "A modern, customizable Next.js boilerplate for creating a blog powered by Notion as a CMS.",
     images: ["/og-image.png"],
     creator: "@notionblogtemplate",
   },
@@ -67,9 +83,9 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: '', // Add your Google Search Console verification code
+    google: "", // Add your Google Search Console verification code
   },
-  category: 'technology',
+  category: "technology",
 };
 
 export default function RootLayout({

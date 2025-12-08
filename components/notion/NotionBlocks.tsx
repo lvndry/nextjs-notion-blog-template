@@ -2,9 +2,12 @@ import type { NotionBlockWithChildren } from "@/lib/notion";
 import { BlockRenderer } from "./BlockRenderer";
 import { RichText } from "./RichText";
 
-function getListMarker(itemNumber: number, listType: "number" | "letter" = "number"): string {
+function getListMarker(
+  itemNumber: number,
+  listType: "number" | "letter" = "number"
+): string {
   if (listType === "letter") {
-    let result = ""
+    let result = "";
     let num = itemNumber - 1;
 
     do {
@@ -17,7 +20,11 @@ function getListMarker(itemNumber: number, listType: "number" | "letter" = "numb
   return itemNumber.toString();
 }
 
-export function NotionBlocks({ blocks }: { blocks: NotionBlockWithChildren[] }) {
+export function NotionBlocks({
+  blocks,
+}: {
+  blocks: NotionBlockWithChildren[];
+}) {
   const elements: React.ReactElement[] = [];
   let blockIndex = 0;
 
@@ -32,7 +39,10 @@ export function NotionBlocks({ blocks }: { blocks: NotionBlockWithChildren[] }) 
       const listItems: React.ReactElement[] = [];
       let currentIndex = blockIndex;
 
-      while (currentIndex < blocks.length && blocks[currentIndex]?.type === "bulleted_list_item") {
+      while (
+        currentIndex < blocks.length &&
+        blocks[currentIndex]?.type === "bulleted_list_item"
+      ) {
         const currentBlock = blocks[currentIndex];
         if (!currentBlock || currentBlock.type !== "bulleted_list_item") {
           currentIndex++;
@@ -41,9 +51,14 @@ export function NotionBlocks({ blocks }: { blocks: NotionBlockWithChildren[] }) 
         const bulletedItem = currentBlock.bulleted_list_item;
         const childrenBlocks = currentBlock.children ?? [];
         const listItem = (
-          <li key={(currentBlock.id ?? currentIndex)} className="text-sm sm:text-base text-gray-800 dark:text-gray-200 mb-2 sm:mb-2.5">
+          <li
+            key={currentBlock.id ?? currentIndex}
+            className="text-sm sm:text-base text-gray-800 dark:text-gray-200 mb-2 sm:mb-2.5"
+          >
             <div className="flex items-start">
-              <span className="mr-2 sm:mr-3 text-gray-500 dark:text-gray-400 flex-shrink-0">•</span>
+              <span className="mr-2 sm:mr-3 text-gray-500 dark:text-gray-400 flex-shrink-0">
+                •
+              </span>
               <span className="min-w-0 flex-1">
                 <RichText items={bulletedItem?.rich_text} />
               </span>
@@ -61,7 +76,10 @@ export function NotionBlocks({ blocks }: { blocks: NotionBlockWithChildren[] }) 
       }
 
       elements.push(
-        <ul key={`bulleted-${blockIndex}`} className="list-none pl-3 sm:pl-4 mb-3 sm:mb-4 space-y-1 sm:space-y-1.5">
+        <ul
+          key={`bulleted-${blockIndex}`}
+          className="list-none pl-3 sm:pl-4 mb-3 sm:mb-4 space-y-1 sm:space-y-1.5"
+        >
           {listItems}
         </ul>
       );
@@ -75,21 +93,37 @@ export function NotionBlocks({ blocks }: { blocks: NotionBlockWithChildren[] }) 
       let itemNumber = 1;
 
       const firstItem = block.numbered_list_item;
-      const firstItemText = firstItem?.rich_text?.[0]?.plain_text?.toLowerCase() || "";
-      const useLetters = firstItemText.includes("letter") || firstItemText.includes("alphabet") || firstItemText.includes("a)") || firstItemText.includes("b)");
+      const firstItemText =
+        firstItem?.rich_text?.[0]?.plain_text?.toLowerCase() || "";
+      const useLetters =
+        firstItemText.includes("letter") ||
+        firstItemText.includes("alphabet") ||
+        firstItemText.includes("a)") ||
+        firstItemText.includes("b)");
       const listType: "number" | "letter" = useLetters ? "letter" : "number";
 
-      while (currentIndex < blocks.length && blocks[currentIndex]?.type === "numbered_list_item") {
-        const currentBlock = blocks[currentIndex] as Extract<NotionBlockWithChildren, { type: "numbered_list_item" }>;
+      while (
+        currentIndex < blocks.length &&
+        blocks[currentIndex]?.type === "numbered_list_item"
+      ) {
+        const currentBlock = blocks[currentIndex] as Extract<
+          NotionBlockWithChildren,
+          { type: "numbered_list_item" }
+        >;
         const numberedItem = currentBlock.numbered_list_item;
         const childrenBlocks = currentBlock.children || [];
 
         const marker = getListMarker(itemNumber, listType);
 
         const listItem = (
-          <li key={(currentBlock.id ?? currentIndex)} className="text-sm sm:text-base text-gray-800 dark:text-gray-200 mb-2 sm:mb-2.5">
+          <li
+            key={currentBlock.id ?? currentIndex}
+            className="text-sm sm:text-base text-gray-800 dark:text-gray-200 mb-2 sm:mb-2.5"
+          >
             <div className="flex items-start">
-              <span className="mr-2 sm:mr-3 text-gray-500 dark:text-gray-400 flex-shrink-0">{marker}.</span>
+              <span className="mr-2 sm:mr-3 text-gray-500 dark:text-gray-400 flex-shrink-0">
+                {marker}.
+              </span>
               <span className="min-w-0 flex-1">
                 <RichText items={numberedItem?.rich_text} />
               </span>
@@ -108,7 +142,10 @@ export function NotionBlocks({ blocks }: { blocks: NotionBlockWithChildren[] }) 
       }
 
       elements.push(
-        <ol key={`numbered-${blockIndex}`} className="list-none pl-3 sm:pl-4 mb-3 sm:mb-4 space-y-1 sm:space-y-1.5">
+        <ol
+          key={`numbered-${blockIndex}`}
+          className="list-none pl-3 sm:pl-4 mb-3 sm:mb-4 space-y-1 sm:space-y-1.5"
+        >
           {listItems}
         </ol>
       );

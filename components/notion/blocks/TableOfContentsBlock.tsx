@@ -10,53 +10,78 @@ interface TocItem {
   elementId: string;
 }
 
-function extractTextFromRichText(richText?: Array<{ plain_text?: string }>): string {
+function extractTextFromRichText(
+  richText?: Array<{ plain_text?: string }>
+): string {
   if (!richText) return "";
-  return richText.map(item => item.plain_text || "").join("");
+  return richText.map((item) => item.plain_text || "").join("");
 }
 
-function extractHeadingsFromBlocks(blocks: NotionBlockWithChildren[]): TocItem[] {
+function extractHeadingsFromBlocks(
+  blocks: NotionBlockWithChildren[]
+): TocItem[] {
   const headings: TocItem[] = [];
 
   function processBlock(block: NotionBlockWithChildren) {
-    if (block.type === "heading_1" || block.type === "heading_2" || block.type === "heading_3") {
-      let headingData: { rich_text?: Array<{ plain_text?: string }> } | undefined;
+    if (
+      block.type === "heading_1" ||
+      block.type === "heading_2" ||
+      block.type === "heading_3"
+    ) {
+      let headingData:
+        | { rich_text?: Array<{ plain_text?: string }> }
+        | undefined;
 
       if (block.type === "heading_1") {
-        headingData = (block as Extract<NotionBlockWithChildren, { type: "heading_1" }>).heading_1;
+        headingData = (
+          block as Extract<NotionBlockWithChildren, { type: "heading_1" }>
+        ).heading_1;
       } else if (block.type === "heading_2") {
-        headingData = (block as Extract<NotionBlockWithChildren, { type: "heading_2" }>).heading_2;
+        headingData = (
+          block as Extract<NotionBlockWithChildren, { type: "heading_2" }>
+        ).heading_2;
       } else if (block.type === "heading_3") {
-        headingData = (block as Extract<NotionBlockWithChildren, { type: "heading_3" }>).heading_3;
+        headingData = (
+          block as Extract<NotionBlockWithChildren, { type: "heading_3" }>
+        ).heading_3;
       }
 
       const text = extractTextFromRichText(headingData?.rich_text);
 
       if (text.trim()) {
-        const level = block.type === "heading_1" ? 1 : block.type === "heading_2" ? 2 : 3;
+        const level =
+          block.type === "heading_1" ? 1 : block.type === "heading_2" ? 2 : 3;
         // Generate the same ID as the heading blocks
-        const elementId = `heading-${text.toLowerCase().replace(/[^a-z0-9]/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "")}`;
+        const elementId = `heading-${text
+          .toLowerCase()
+          .replace(/[^a-z0-9]/g, "-")
+          .replace(/-+/g, "-")
+          .replace(/^-|-$/g, "")}`;
 
         headings.push({
           id: elementId,
           text: text.trim(),
           level,
-          elementId
+          elementId,
         });
       }
     }
 
     // Process child blocks recursively
     if (block.children) {
-      block.children.forEach(childBlock => processBlock(childBlock));
+      block.children.forEach((childBlock) => processBlock(childBlock));
     }
   }
 
-  blocks.forEach(block => processBlock(block));
+  blocks.forEach((block) => processBlock(block));
   return headings;
 }
 
-export function TableOfContentsBlock({ allBlocks }: { allBlocks?: NotionBlockWithChildren[] }) {
+export function TableOfContentsBlock({
+  allBlocks,
+}: {
+  allBlocks?: NotionBlockWithChildren[];
+}) {
   const tocItems = useMemo(() => {
     if (!allBlocks) return [];
     return extractHeadingsFromBlocks(allBlocks);
@@ -67,28 +92,47 @@ export function TableOfContentsBlock({ allBlocks }: { allBlocks?: NotionBlockWit
     if (element) {
       element.scrollIntoView({ behavior: "smooth", block: "start" });
     }
-  };
+  }
 
   function getIndentClass(level: number) {
     switch (level) {
-      case 1: return "ml-0";
-      case 2: return 'ml-3 sm:ml-4';
-      case 3: return 'ml-6 sm:ml-8';
-      case 4: return "ml-9 sm:ml-12";
-      case 5: return "ml-12 sm:ml-16";
-      case 6: return "ml-15 sm:ml-20";
-      default: return "ml-0";
+      case 1:
+        return "ml-0";
+      case 2:
+        return "ml-3 sm:ml-4";
+      case 3:
+        return "ml-6 sm:ml-8";
+      case 4:
+        return "ml-9 sm:ml-12";
+      case 5:
+        return "ml-12 sm:ml-16";
+      case 6:
+        return "ml-15 sm:ml-20";
+      default:
+        return "ml-0";
     }
-  };
+  }
 
   if (tocItems.length === 0) {
     return (
       <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
         <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
-          <svg className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+          <svg
+            className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M4 6h16M4 10h16M4 14h16M4 18h16"
+            />
           </svg>
-          <span className="text-xs sm:text-sm font-medium">Table of Contents</span>
+          <span className="text-xs sm:text-sm font-medium">
+            Table of Contents
+          </span>
         </div>
         <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-2">
           No headings found in this page.
@@ -100,10 +144,22 @@ export function TableOfContentsBlock({ allBlocks }: { allBlocks?: NotionBlockWit
   return (
     <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
       <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300 mb-2 sm:mb-3">
-        <svg className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+        <svg
+          className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M4 6h16M4 10h16M4 14h16M4 18h16"
+          />
         </svg>
-        <span className="text-xs sm:text-sm font-medium">Table of Contents</span>
+        <span className="text-xs sm:text-sm font-medium">
+          Table of Contents
+        </span>
       </div>
 
       <nav className="space-y-1 sm:space-y-1.5">
@@ -111,7 +167,9 @@ export function TableOfContentsBlock({ allBlocks }: { allBlocks?: NotionBlockWit
           <button
             key={item.id}
             onClick={() => scrollToHeading(item.elementId)}
-            className={`block w-full text-left text-xs sm:text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded px-2 sm:px-3 py-1.5 sm:py-2 transition-colors min-h-[44px] flex items-center ${getIndentClass(item.level)}`}
+            className={`block w-full text-left text-xs sm:text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded px-2 sm:px-3 py-1.5 sm:py-2 transition-colors min-h-[44px] flex items-center ${getIndentClass(
+              item.level
+            )}`}
           >
             {item.text}
           </button>

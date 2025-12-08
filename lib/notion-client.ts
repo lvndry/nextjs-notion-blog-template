@@ -33,7 +33,7 @@ export async function fetchNotionPages(): Promise<NotionPagesResponse> {
     console.error("Error fetching pages:", error);
     return {
       pages: [],
-      error: "Failed to fetch pages from Notion"
+      error: "Failed to fetch pages from Notion",
     };
   }
 }

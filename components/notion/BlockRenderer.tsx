@@ -5,20 +5,40 @@ import { ChildPageBlock } from "./blocks/ChildPageBlock";
 import { CodeBlock } from "./blocks/CodeBlock";
 import { ColumnListBlock } from "./blocks/ColumnListBlock";
 import { DividerBlock } from "./blocks/DividerBlock";
-import { Heading1Block, Heading2Block, Heading3Block } from "./blocks/HeadingBlocks";
+import {
+  Heading1Block,
+  Heading2Block,
+  Heading3Block,
+} from "./blocks/HeadingBlocks";
 import { ImageBlock } from "./blocks/ImageBlock";
 import { ParagraphBlock } from "./blocks/ParagraphBlock";
 import { QuoteBlock } from "./blocks/QuoteBlock";
 import { TableBlock } from "./blocks/TableBlock";
 import { ToDoBlock } from "./blocks/ToDoBlock";
 
-const ToggleBlock = dynamic(() => import("./blocks/ToggleBlock").then((mod) => ({ default: mod.ToggleBlock })), {
-  ssr: false,
-});
+const ToggleBlock = dynamic(
+  () =>
+    import("./blocks/ToggleBlock").then((mod) => ({
+      default: mod.ToggleBlock,
+    })),
+  {
+    ssr: false,
+  }
+);
 
-const TableOfContentsBlock = dynamic(() => import("./blocks/TableOfContentsBlock").then((mod) => ({ default: mod.TableOfContentsBlock })));
+const TableOfContentsBlock = dynamic(() =>
+  import("./blocks/TableOfContentsBlock").then((mod) => ({
+    default: mod.TableOfContentsBlock,
+  }))
+);
 
-export function BlockRenderer({ block, allBlocks }: { block: NotionBlockWithChildren; allBlocks?: NotionBlockWithChildren[] }) {
+export function BlockRenderer({
+  block,
+  allBlocks,
+}: {
+  block: NotionBlockWithChildren;
+  allBlocks?: NotionBlockWithChildren[];
+}) {
   switch (block.type) {
     case "paragraph":
       return <ParagraphBlock block={block} />;

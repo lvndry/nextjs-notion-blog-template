@@ -18,11 +18,14 @@ export async function GET(request: NextRequest) {
       case "list": {
         // Get all accessible pages
         const pages = await searchAllPages();
-        return NextResponse.json({ pages }, {
-          headers: {
-            'Cache-Control': 's-maxage=3600, stale-while-revalidate',
-          },
-        });
+        return NextResponse.json(
+          { pages },
+          {
+            headers: {
+              "Cache-Control": "s-maxage=3600, stale-while-revalidate",
+            },
+          }
+        );
       }
 
       case "content": {
@@ -35,11 +38,14 @@ export async function GET(request: NextRequest) {
         }
 
         const content = await getPageContent(pageId);
-        return NextResponse.json({ content }, {
-          headers: {
-            'Cache-Control': 's-maxage=3600, stale-while-revalidate',
-          },
-        });
+        return NextResponse.json(
+          { content },
+          {
+            headers: {
+              "Cache-Control": "s-maxage=3600, stale-while-revalidate",
+            },
+          }
+        );
       }
 
       case "details": {
@@ -52,11 +58,14 @@ export async function GET(request: NextRequest) {
         }
 
         const details = await getPageDetails(pageId);
-        return NextResponse.json({ details }, {
-          headers: {
-            'Cache-Control': 's-maxage=3600, stale-while-revalidate',
-          },
-        });
+        return NextResponse.json(
+          { details },
+          {
+            headers: {
+              "Cache-Control": "s-maxage=3600, stale-while-revalidate",
+            },
+          }
+        );
       }
 
       default:

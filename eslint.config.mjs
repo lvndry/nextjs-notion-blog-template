@@ -48,7 +48,7 @@ export default defineConfig(
       ...reactPlugin.configs["jsx-runtime"].rules,
       ...reactHooksPlugin.configs.recommended.rules,
       "react/no-unescaped-entities": "warn",
-      "react/react-in-jsx-scope": "off", // Not needed in Next.js
+      "react/react-in-jsx-scope": "off",
 
       // Next.js best practices
       ...nextPlugin.configs.recommended.rules,

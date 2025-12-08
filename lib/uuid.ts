@@ -11,7 +11,8 @@
  */
 export function isValidUUID(uuid: string): boolean {
   // Check for standard hyphenated UUID format
-  const hyphenatedUUIDRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+  const hyphenatedUUIDRegex =
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
   // Check for non-hyphenated UUID format (like in Notion URLs)
   const nonHyphenatedUUIDRegex = /^[0-9a-f]{32}$/i;
@@ -32,12 +33,15 @@ export function isValidUUID(uuid: string): boolean {
  */
 export function normalizeUUID(uuid: string): string {
   // Already in hyphenated format
-  if (uuid.includes('-')) {
+  if (uuid.includes("-")) {
     return uuid;
   }
 
   if (uuid.length === 32 && /^[0-9a-f]{32}$/i.test(uuid)) {
-    return `${uuid.slice(0, 8)}-${uuid.slice(8, 12)}-${uuid.slice(12, 16)}-${uuid.slice(16, 20)}-${uuid.slice(20, 32)}`;
+    return `${uuid.slice(0, 8)}-${uuid.slice(8, 12)}-${uuid.slice(
+      12,
+      16
+    )}-${uuid.slice(16, 20)}-${uuid.slice(20, 32)}`;
   }
 
   return uuid;

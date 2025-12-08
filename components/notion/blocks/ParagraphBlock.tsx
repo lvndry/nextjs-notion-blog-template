@@ -2,7 +2,9 @@ import type { NotionBlockWithChildren } from "@/lib/notion";
 import { RichText } from "../RichText";
 
 export function ParagraphBlock({ block }: { block: NotionBlockWithChildren }) {
-  const paragraph = (block as Extract<NotionBlockWithChildren, { type: "paragraph" }>).paragraph;
+  const paragraph = (
+    block as Extract<NotionBlockWithChildren, { type: "paragraph" }>
+  ).paragraph;
   const items = paragraph?.rich_text;
 
   return (

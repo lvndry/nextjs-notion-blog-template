@@ -118,8 +118,10 @@ export async function getChildrenPages(pageId: string): Promise<NotionPage[]> {
   }
 }
 
-// Extract page title from properties
-function extractPageTitle(page: NotionPageResponse): string {
+/**
+ * Extract page title from properties
+ */
+export function extractPageTitle(page: NotionPageDetails): string {
   const properties = page.properties;
 
   for (const [, value] of Object.entries(properties)) {
@@ -222,10 +224,40 @@ export async function getPageDetails(pageId: string): Promise<NotionPageDetails>
 /**
  * Extract cover URL from page
  */
-export function extractCoverUrl(page: { cover: PageObjectResponse["cover"] }): string | null {
+export function extractCoverUrl(page: NotionPageDetails): string | null {
   const { cover } = page;
   if (!cover) return null;
   if (cover.type === "file" && cover.file?.url) return cover.file.url;
   if (cover.type === "external" && cover.external?.url) return cover.external.url;
+  return null;
+}
+
+
+/**
+ * Extract page URL from NotionPageDetails
+ */
+export function extractPageUrl(details: NotionPageDetails): string | null {
+  return details.url || null;
+}
+
+/**
+ * Extract page icon from NotionPageDetails
+ */
+export function extractPageIcon(pageDetails: NotionPageDetails): string | null {
+  const icon = pageDetails.icon;
+  if (!icon) return null;
+
+  if (icon.type === "emoji" && icon.emoji) {
+    return icon.emoji;
+  }
+
+  if (icon.type === "file" && icon.file?.url) {
+    return icon.file.url;
+  }
+
+  if (icon.type === "external" && icon.external?.url) {
+    return icon.external.url;
+  }
+
   return null;
 }

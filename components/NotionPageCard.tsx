@@ -2,19 +2,17 @@
 
 import { formatDate } from "@/lib/date";
 import type { NotionPage } from "@/lib/notion-client";
-import type { TitlePropertyItemObjectResponse } from "@notionhq/client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-
-interface NotionPageDetails {
-  properties?: Record<string, TitlePropertyItemObjectResponse | { type: string }>;
-}
+import { NotionPageDetails } from "../lib/notion";
 
 interface NotionPageCardProps {
   page: NotionPage;
 }
 
-function isPageParent(parent: NotionPage["parent"]): parent is { type: "page_id"; page_id: string } {
+function isPageParent(
+  parent: NotionPage["parent"]
+): parent is { type: "page_id"; page_id: string } {
   return parent.type === "page_id";
 }
 
@@ -31,7 +29,9 @@ export default function NotionPageCard({ page }: NotionPageCardProps) {
 
     (async () => {
       try {
-        const res = await fetch(`/api/notion/pages?action=details&pageId=${parentPageId}`);
+        const res = await fetch(
+          `/api/notion/pages?action=details&pageId=${parentPageId}`
+        );
         const data: { details?: NotionPageDetails } = await res.json();
         const details = data.details;
 
@@ -41,9 +41,9 @@ export default function NotionPageCard({ page }: NotionPageCardProps) {
         if (properties) {
           for (const [, value] of Object.entries(properties)) {
             if (value.type === "title") {
-              const titleArr = (value as TitlePropertyItemObjectResponse).title;
+              const titleArr = value.title;
               if (Array.isArray(titleArr) && titleArr.length > 0) {
-                title = titleArr.map(t => t?.plain_text ?? '').join('');
+                title = titleArr.map((t) => t?.plain_text ?? "").join("");
                 break;
               }
             }
@@ -68,14 +68,16 @@ export default function NotionPageCard({ page }: NotionPageCardProps) {
   return (
     <div className="group rounded-xl border border-zinc-200 bg-white p-4 sm:p-5 transition-shadow hover:shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
       {page.id ? (
-        <Link href={`/page/${page.id}`} className="block">
+        <Link href={`/blog/${page.id}`} className="block">
           <h3 className="text-base sm:text-lg font-medium text-zinc-900 group-hover:underline dark:text-white leading-tight">
             {page.title}
           </h3>
           <div className="mt-2 flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">
             <span>{formatDate(page.created_time)}</span>
             {isPageParent(parent) && (
-              <span className="hidden sm:inline">· {parentName ?? "Parent"}</span>
+              <span className="hidden sm:inline">
+                · {parentName ?? "Parent"}
+              </span>
             )}
             {isPageParent(parent) && (
               <span className="sm:hidden">{parentName ?? "Parent"}</span>
@@ -90,7 +92,9 @@ export default function NotionPageCard({ page }: NotionPageCardProps) {
           <div className="mt-2 flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">
             <span>{formatDate(page.created_time)}</span>
             {isPageParent(parent) && (
-              <span className="hidden sm:inline">· {parentName ?? "Parent"}</span>
+              <span className="hidden sm:inline">
+                · {parentName ?? "Parent"}
+              </span>
             )}
             {isPageParent(parent) && (
               <span className="sm:hidden">{parentName ?? "Parent"}</span>

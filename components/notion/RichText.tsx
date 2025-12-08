@@ -6,7 +6,7 @@ export function RichText({ items }: { items?: RichTextItemResponse[] }) {
   return (
     <>
       {items.map((text, index) => (
-        <span key={index}>{text?.plain_text ?? ''}</span>
+        <span key={index}>{text?.plain_text ?? ""}</span>
       ))}
     </>
   );

@@ -7,7 +7,8 @@ import { RichText } from "../RichText";
 
 export function ToggleBlock({ block }: { block: NotionBlockWithChildren }) {
   const [isOpen, setIsOpen] = useState(false);
-  const toggle = (block as Extract<NotionBlockWithChildren, { type: "toggle" }>).toggle;
+  const toggle = (block as Extract<NotionBlockWithChildren, { type: "toggle" }>)
+    .toggle;
   const children = block.children || [];
 
   return (
@@ -26,7 +27,12 @@ export function ToggleBlock({ block }: { block: NotionBlockWithChildren }) {
             stroke="currentColor"
             viewBox="0 0 24 24"
           >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 5l7 7-7 7"
+            />
           </svg>
         </div>
         <div className="flex-1 text-sm sm:text-base text-gray-800 dark:text-gray-200 min-w-0">
