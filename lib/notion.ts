@@ -39,7 +39,6 @@ interface NotionPageResponse {
  */
 export async function searchAllPages(): Promise<NotionPage[]> {
   try {
-    console.log("Fetching pages from Notion...");
     const response = await notion.search({
       filter: {
         property: "object",
@@ -47,8 +46,6 @@ export async function searchAllPages(): Promise<NotionPage[]> {
       },
       page_size: 100
     });
-
-    console.log(`Notion search returned ${response.results.length} results.`);
 
     const pages: NotionPage[] = response.results.map((page) => {
       const urlFriendlyId = page.id.replace(/-/g, "");

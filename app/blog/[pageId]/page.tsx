@@ -249,10 +249,14 @@ export async function generateMetadata({ params }: PageProps) {
 }
 
 export async function generateStaticParams() {
-  const pages = await searchAllPages();
-  return pages.map((page) => ({
-    pageId: page.id,
-  }));
+  try {
+    const pages = await searchAllPages();
+    return pages.map((page) => ({
+      pageId: page.id,
+    }));
+  } catch {
+    return [];
+  }
 }
 
 // 1 hour cache
