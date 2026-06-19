@@ -67,7 +67,7 @@ export async function searchAllPages(): Promise<NotionPage[]> {
     return pages;
   } catch (error) {
     console.error(`${error} Error searching pages:`);
-    throw new Error(`${error} Failed to fetch pages from Notion`);
+    throw new Error(`${error} Failed to fetch pages from Notion`, { cause: error });
   }
 }
 
@@ -185,7 +185,7 @@ export async function getPageContent(pageId: string): Promise<NotionBlockWithChi
     return withChildren;
   } catch (error) {
     console.error(`${error} Error fetching page content:`);
-    throw new Error(`${error} Failed to fetch page content`);
+    throw new Error(`${error} Failed to fetch page content`, { cause: error });
   }
 }
 
@@ -214,7 +214,7 @@ export async function getPageDetails(pageId: string): Promise<NotionPageDetails>
     }
   } catch (error) {
     console.error(`${error} Error fetching page details:`);
-    throw new Error(`${error} Failed to fetch page details`);
+    throw new Error(`${error} Failed to fetch page details`, { cause: error });
   }
 }
 

@@ -254,7 +254,8 @@ export async function generateStaticParams() {
     return pages.map((page) => ({
       pageId: page.id,
     }));
-  } catch {
+  } catch (error) {
+    console.error("Failed to generate static params for blog pages:", error);
     return [];
   }
 }
